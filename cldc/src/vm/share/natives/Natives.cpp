@@ -1186,6 +1186,36 @@ void Java_java_lang_Thread_interrupt0(JVM_SINGLE_ARG_TRAPS) {
     Scheduler::interrupt_thread(&t JVM_NO_CHECK_AT_BOTTOM);
   }
 }
+
+jboolean Java_java_lang_Thread_isInterrupted() {
+  ThreadObj::Raw receiver = GET_PARAMETER_AS_OOP(0);
+  if (receiver().is_alive()) {
+  	Thread::Raw t = receiver().thread();
+  	if (t().is_pending_interrupt()) {
+		return KNI_TRUE;
+	} else {
+		return KNI_FALSE;
+	}
+  } else {
+	return KNI_FALSE;
+  }
+}
+
+jboolean Java_java_lang_Thread_interrupted() {
+  ThreadObj::Raw receiver = Thread::current()->thread_obj();
+  if (receiver().is_alive()) {
+  	if (Thread::current()->is_pending_interrupt()) {
+		Thread::current()->clear_pending_interrupt();
+		return KNI_TRUE;
+	} else {
+		return KNI_FALSE;
+	}
+  } else {
+	return KNI_FALSE;
+  }
+}
+
+
 #endif
 
 #if ENABLE_STACK_TRACE

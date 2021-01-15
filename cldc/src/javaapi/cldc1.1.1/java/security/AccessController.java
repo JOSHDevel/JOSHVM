@@ -272,12 +272,12 @@ public final class AccessController {
      * @see #doPrivileged(PrivilegedAction)
      * @see #doPrivileged(PrivilegedExceptionAction,AccessControlContext)
      */
-/*    public static Object doPrivileged(PrivilegedAction action,
+    public static Object doPrivileged(PrivilegedAction action,
 				      AccessControlContext context)
     {
 	return action.run();
     }
-*/
+
     /**
      * Performs the specified <code>PrivilegedExceptionAction</code> with
      * privileges enabled.  The action is performed with <i>all</i> of the 
@@ -293,13 +293,13 @@ public final class AccessController {
      * @see #doPrivileged(PrivilegedAction)
      * @see #doPrivileged(PrivilegedExceptionAction,AccessControlContext)
      */
-/*
+
     public static Object doPrivileged(PrivilegedExceptionAction action)
 	 throws PrivilegedActionException
     {
 	return doPrivileged(action, null);
     }
-*/
+
 
     /**
      * Performs the specified <code>PrivilegedExceptionAction</code> with 
@@ -323,8 +323,8 @@ public final class AccessController {
      * @see #doPrivileged(PrivilegedAction)
      * @see #doPrivileged(PrivilegedExceptionAction,AccessControlContext)
      */
-/*    public static Object doPrivileged(PrivilegedExceptionAction action,
-				      AccessControlContext context)
+    public static Object doPrivileged(PrivilegedExceptionAction action,
+				      AccessControlContext context) throws PrivilegedActionException
     {
 	try {
 	    return action.run();
@@ -335,10 +335,8 @@ public final class AccessController {
 	    // slight deviation from JDK behavior, but not spec
 	    // They always wrap, for some reason (bug?)
 	    throw new PrivilegedActionException(e);
-	} catch (Throwable e) {
-	    throw CVM.throwLocalException(e);
 	}
-    }*/
+    }
 
     /**
      * Returns the AccessControl context. i.e., it gets 

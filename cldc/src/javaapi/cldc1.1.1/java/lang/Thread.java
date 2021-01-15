@@ -350,6 +350,10 @@ class Thread implements Runnable {
         }
     }
 
+    public static native boolean interrupted();
+
+    public native boolean isInterrupted();
+
     /**
      * Returns a string representation of this thread, including the
      * thread's name and priority.
