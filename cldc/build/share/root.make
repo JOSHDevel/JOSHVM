@@ -754,11 +754,12 @@ CLDC_JAR_packages=$(SDK_LIB_DIR)/cldc111.zip
 GCF_JAR_packages=$(SDK_LIB_DIR)/gcf.zip
 UTILS_JAR_packages=$(SDK_LIB_DIR)/josh-util.zip
 JOSHVM_JAR_packages=$(SDK_LIB_DIR)/joshvm.zip
+JOSHJ5CONCURRENCY_JAR_packages=$(SDK_LIB_DIR)/j5-conc.zip
 
 JOSHVM_SIMU_EXECUTABLE=$(SDK_BIN_DIR)/cldc_vm.exe
 PREVERIFY_EXECUTABLE=$(SDK_BIN_DIR)/preverify.exe
 
-JOSHSDK_JARS_packages := $(CLDC_JAR_packages) $(GCF_JAR_packages) $(UTILS_JAR_packages) $(JOSHVM_JAR_packages)
+JOSHSDK_JARS_packages := $(CLDC_JAR_packages) $(GCF_JAR_packages) $(UTILS_JAR_packages) $(JOSHVM_JAR_packages) $(JOSHJ5CONCURRENCY_JAR_packages)
 JOSHSDK_EXECUTABLES := $(JOSHVM_SIMU_EXECUTABLE) $(PREVERIFY_EXECUTABLE)
 
 package_all : package_clean $(SDK_LIB_DIR) $(SDK_BIN_DIR) $$(EXT_JAR_packages) $$(JOSHSDK_JARS_packages) $$(JOSHSDK_EXECUTABLES)
@@ -794,6 +795,11 @@ DOC_josh-util_PACKAGES = org.joshvm.util
 DOC_PACKAGES += $(DOC_josh-util_PACKAGES)
 
 DOC_joshvm_PACKAGES = com.sun.cldc.io
+
+DOC_j5-conc_PACKAGES = edu.emory.mathcs.backport.java.util
+DOC_j5-conc_PACKAGES += edu.emory.mathcs.backport.java.util.concurrent edu.emory.mathcs.backport.java.util.concurrent.atomic
+DOC_j5-conc_PACKAGES += edu.emory.mathcs.backport.java.util.concurrent.locks
+DOC_PACKAGES += $(DOC_j5-conc_PACKAGES)
 
 help:
 	$(A)echo "Help placeholder"
