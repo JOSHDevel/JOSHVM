@@ -167,6 +167,11 @@ javacall_result javacall_directui_drawrawdata(int x, int y, javacall_uint8* imag
         int w, int h, int delayed);
 
 
+javacall_result javacall_directui_image_decode(javacall_uint8* imagedata, int datalen,
+							javacall_uint8* decodedData, int decodedLen, javacall_directui_image_type type);
+
+javacall_bool javacall_directui_image_supported(int type);
+
 typedef enum {
     JAVACALL_KEYPRESSED  = 1,
     JAVACALL_KEYRELEASED = 2

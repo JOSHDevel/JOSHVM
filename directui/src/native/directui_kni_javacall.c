@@ -281,7 +281,7 @@ Java_org_joshvm_j2me_directUI_Text_getHeight0()
 
 KNIEXPORT
 KNI_RETURNTYPE_INT
-Java_org_joshvm_j2me_directUI_Image_getWidth0()
+Java_org_joshvm_j2me_directUI_PlatformImageDecoder_getWidth0()
 {
     int width = 0;
 #if ENABLE_PCSL
@@ -314,7 +314,7 @@ Java_org_joshvm_j2me_directUI_Image_getWidth0()
 
 KNIEXPORT
 KNI_RETURNTYPE_INT
-Java_org_joshvm_j2me_directUI_Image_getHeight0()
+Java_org_joshvm_j2me_directUI_PlatformImageDecoder_getHeight0()
 {
     int height = 0;
 #if ENABLE_PCSL
@@ -343,6 +343,54 @@ Java_org_joshvm_j2me_directUI_Image_getHeight0()
     KNI_EndHandles();
 #endif
     KNI_ReturnInt(height);
+}
+
+KNIEXPORT
+KNI_RETURNTYPE_VOID
+Java_org_joshvm_j2me_directUI_PlatformImageDecoder_decode0()
+{
+#if ENABLE_PCSL
+    int height;
+    int offset, len, imgBufferLen;
+    int type;
+    javacall_result result = JAVACALL_FAIL;
+
+    KNI_StartHandles(2);
+    KNI_DeclareHandle(dataObj);
+	KNI_DeclareHandle(imgBufferObj);
+    KNI_GetParameterAsObject(1, dataObj);
+	KNI_GetParameterAsObject(4, imgBufferObj);
+    offset = (int)KNI_GetParameterAsInt(2);
+    len = (int)KNI_GetParameterAsInt(3);
+	imgBufferLen = (int)KNI_GetParameterAsInt(5);
+    type = (int)KNI_GetParameterAsInt(6);
+
+    SNI_BEGIN_RAW_POINTERS
+    result = javacall_directui_image_decode(
+        (javacall_uint8 *)SNI_GetRawArrayPointer(dataObj)+offset, len,
+        (javacall_uint8 *)SNI_GetRawArrayPointer(imgBufferObj), imgBufferLen,
+        (javacall_directui_image_type)type);
+    SNI_END_RAW_POINTERS
+
+    if (result != JAVACALL_OK) {
+		KNI_ThrowNew(KNIIOException, "Image decode error");
+	}
+
+    KNI_EndHandles();
+#endif
+    KNI_ReturnVoid();
+}
+
+KNIEXPORT
+KNI_RETURNTYPE_BOOLEAN
+Java_org_joshvm_j2me_directUI_PlatformImageDecoder_isSupportedType()
+{
+	int type = (int)KNI_GetParameterAsInt(1);
+	if (JAVACALL_TRUE == javacall_directui_image_supported(type)) {
+	    KNI_ReturnBoolean(KNI_TRUE);
+	} else {
+	    KNI_ReturnBoolean(KNI_FALSE);
+	}
 }
 
 KNIEXPORT

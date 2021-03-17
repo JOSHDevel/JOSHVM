@@ -25,6 +25,9 @@
 extern "C"{
 #endif
 
+#define pcsl_mem_malloc malloc
+#define pcsl_mem_free free
+
 javacall_result javacall_directui_init(void) {
     return JAVACALL_OK;
 }
@@ -62,7 +65,56 @@ javacall_result javacall_directui_text_getsize(int font, const javacall_utf16* t
 
 javacall_result javacall_directui_image_getsize(javacall_uint8* image_data,
         int data_len, javacall_directui_image_type type, int* width, int* height) {
-    return JAVACALL_FAIL;
+
+	if (type == JAVACALL_IMAGETYPE_JPG) {
+		void *info = JPEG_To_RGB_init();
+		if (info) {
+    		if (JPEG_To_RGB_decodeHeader(info, image_data, data_len, width, height)) {
+				return JAVACALL_OK;
+    		} else {
+				return JAVACALL_FAIL;
+			}
+			JPEG_To_RGB_free(info);			
+		} else {
+			return JAVACALL_FAIL;
+		}
+    } else {
+		return JAVACALL_NOT_IMPLEMENTED;
+	}
+    return JAVACALL_OK;
+}
+
+javacall_result javacall_directui_image_decode(javacall_uint8* imagedata, int datalen,
+							javacall_uint8* decodedData, int decodedLen, javacall_directui_image_type type) {
+	int w, h;
+	javacall_uint8 *raw_image;
+	
+    if (type == JAVACALL_IMAGETYPE_JPG) {
+		void *info = JPEG_To_RGB_init();
+		if (info) {
+    		raw_image = JPEG_To_RGB_decode(info, imagedata, datalen, &w, &h);
+			if (raw_image != NULL) {
+				if (decodedData != NULL && w*h*3 == decodedLen) {
+					javautil_memcpy(decodedData, raw_image, decodedLen);
+				}
+				pcsl_mem_free(raw_image);
+			}
+			JPEG_To_RGB_free(info);			
+		} else {
+			return JAVACALL_FAIL;
+		}
+    } else {
+		return JAVACALL_NOT_IMPLEMENTED;
+	}
+    return JAVACALL_OK;
+}
+
+javacall_bool javacall_directui_image_supported(int type) {
+	if (type == JAVACALL_IMAGETYPE_JPG) {
+		return JAVACALL_TRUE;
+	} else {
+		return JAVACALL_FALSE;
+	}
 }
 
 javacall_result javacall_directui_drawimage(int x, int y, javacall_uint8* image_data,

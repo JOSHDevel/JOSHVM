@@ -21,18 +21,21 @@
 package org.joshvm.j2me.directUI;
 
 public class Image {
+    public static final int IMAGE_TYPE_CUSTOME = -1;
     public static final int IMAGE_TYPE_PNG = 0;
     public static final int IMAGE_TYPE_JPG = 1;
     public static final int IMAGE_TYPE_BMP = 2;
 
     private int imageType;
     private byte imageData[];
+    private PlatformImageDecoder decoder;
 
     public Image(int type) {
         if (type == IMAGE_TYPE_PNG ||
             type == IMAGE_TYPE_JPG ||
             type == IMAGE_TYPE_BMP) {
             imageType = type;
+            decoder = new PlatformImageDecoder();
             return;
         }
         throw new IllegalArgumentException();
@@ -51,19 +54,11 @@ public class Image {
     }
 
     public int getWidth() {
-        if (imageData == null || imageData.length == 0) {
-            return 0;
-        }
-        return getWidth0(imageData, 0, imageData.length, imageType);
+        return decoder.getWidth(imageData, imageType);
     }
 
     public int getHeight() {
-        if (imageData == null || imageData.length == 0) {
-            return 0;
-        }
-        return getHeight0(imageData, 0, imageData.length, imageType);
+        return decoder.getHeight(imageData, imageType);
     }
 
-    private native int getWidth0(byte[] data, int offset, int len, int type);
-    private native int getHeight0(byte[] data, int offset, int len, int type);
 }

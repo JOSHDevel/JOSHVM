@@ -92,6 +92,17 @@ javacall_result javacall_directui_setBacklight(int on) {
 	return JAVACALL_OK;
 }
 
+javacall_result javacall_directui_image_decode(javacall_uint8* imagedata, int datalen,
+							javacall_uint8* decodedData, int decodedLen, javacall_directui_image_type type) {
+	return JAVACALL_NOT_IMPLEMENTED;
+}
+
+javacall_bool javacall_directui_image_supported(int type) {
+	return JAVACALL_FALSE;
+}
+
+
+
 #ifdef __cplusplus
 }
 #endif

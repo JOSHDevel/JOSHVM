@@ -26,6 +26,9 @@
 extern "C"{
 #endif
 
+#define pcsl_mem_malloc malloc
+#define pcsl_mem_free free
+
 static HBITMAP hDefaultDisplayCanvas;
 static HDC hDefaultDisplayHdc;
 static HBITMAP hbmOld;
@@ -35,9 +38,9 @@ static javacall_keypress_type _down_keyevent;
 static int direct_ui_initialized = 0;
 
 /* convert color to 16bit color */
-#define RGB16TORGB24(x) (((( x ) << 8) & 0x00F80000) | \
+#define RGB16TOBGR24(x) (((( x ) << 19) & 0x00F80000) | \
                          ((( x ) << 5) & 0x0000FC00) | \
-                         ((( x ) << 3) & 0x000000F8) )
+                         ((( x ) >> 8) & 0x000000F8) )
 
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)  
 {  
@@ -231,10 +234,7 @@ javacall_result javacall_directui_text_getsize(int font, const javacall_utf16* t
 
 javacall_result javacall_directui_image_getsize(javacall_uint8* image_data,
         int data_len, javacall_directui_image_type type, int* width, int* height) {
-    if (JAVACALL_OK != ensure_initialized()) {
-		return JAVACALL_FAIL;
-	}
-
+    
 	if (type == JAVACALL_IMAGETYPE_JPG) {
 		void *info = JPEG_To_RGB_init();
 		if (info) {
@@ -252,6 +252,41 @@ javacall_result javacall_directui_image_getsize(javacall_uint8* image_data,
 	}
     return JAVACALL_OK;
 }
+
+javacall_result javacall_directui_image_decode(javacall_uint8* imagedata, int datalen,
+							javacall_uint8* decodedData, int decodedLen, javacall_directui_image_type type) {
+	int w, h;
+	javacall_uint8 *raw_image;
+
+	
+    if (type == JAVACALL_IMAGETYPE_JPG) {
+		void *info = JPEG_To_RGB_init();
+		if (info) {
+    		raw_image = JPEG_To_RGB_decode(info, imagedata, datalen, &w, &h);
+			if (raw_image != NULL) {
+				if (decodedData != NULL && w*h*3 == decodedLen) {
+					javautil_memcpy(decodedData, raw_image, decodedLen);
+				}
+				pcsl_mem_free(raw_image);
+			}
+			JPEG_To_RGB_free(info);			
+		} else {
+			return JAVACALL_FAIL;
+		}
+    } else {
+		return JAVACALL_NOT_IMPLEMENTED;
+	}
+    return JAVACALL_OK;
+}
+
+javacall_bool javacall_directui_image_supported(int type) {
+	if (type == JAVACALL_IMAGETYPE_JPG) {
+		return JAVACALL_TRUE;
+	} else {
+		return JAVACALL_FALSE;
+	}
+}
+
 
 javacall_result javacall_directui_drawimage(int x, int y, javacall_uint8* image_data,
         int data_len, javacall_directui_image_type type, int delayed) {
@@ -302,7 +337,7 @@ javacall_result javacall_directui_drawrawdata(int x, int y, javacall_uint8* imag
     unsigned short *p = (unsigned short*)image_data;
 	for (int j = 0; j < h; j++) {
 		for (int i = 0; i < w; i++) {			
-			SetPixel(hDefaultDisplayHdc, x+i, y+j, RGB16TORGB24(*p));
+			SetPixel(hDefaultDisplayHdc, x+i, y+j, RGB16TOBGR24(*p));
 			p++;
 		}
 	}

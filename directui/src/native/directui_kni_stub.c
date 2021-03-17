@@ -99,16 +99,31 @@ Java_org_joshvm_j2me_directUI_Text_getHeight0()
 
 KNIEXPORT
 KNI_RETURNTYPE_INT
-Java_org_joshvm_j2me_directUI_Image_getWidth0()
+Java_org_joshvm_j2me_directUI_PlatformImageDecoder_getWidth0()
 {
-	KNI_ReturnInt(0);
+    KNI_ReturnInt(0);
 }
 
 KNIEXPORT
 KNI_RETURNTYPE_INT
-Java_org_joshvm_j2me_directUI_Image_getHeight0()
+Java_org_joshvm_j2me_directUI_PlatformImageDecoder_getHeight0()
 {
-	KNI_ReturnInt(0);
+    KNI_ReturnInt(0);
+}
+
+KNIEXPORT
+KNI_RETURNTYPE_BOOLEAN
+Java_org_joshvm_j2me_directUI_PlatformImageDecoder_isSupportedType()
+{
+    KNI_ReturnBoolean(KNI_FALSE);
+}
+
+
+KNIEXPORT
+KNI_RETURNTYPE_VOID
+Java_org_joshvm_j2me_directUI_PlatformImageDecoder_decode0()
+{
+	KNI_ReturnVoid();
 }
 
 KNIEXPORT
