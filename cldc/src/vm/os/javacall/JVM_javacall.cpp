@@ -201,9 +201,6 @@ static int JVM_Task(int argc, char **argv) {
 #ifdef ENABLE_DIO
   javacall_gpio_init();
 #endif
-#ifdef ENABLE_DIRECTUI
-	javacall_directui_init();
-#endif
 
   argc --;
   argv ++;

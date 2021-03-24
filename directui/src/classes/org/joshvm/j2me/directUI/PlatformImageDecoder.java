@@ -20,9 +20,9 @@
   */
 package org.joshvm.j2me.directUI;
 
-class PlatformImageDecoder extends ImageDecoder {
+class PlatformImageDecoder implements ImageDecoder {
 
-    public ImageBuffer decode(byte[] imageData, int imageType) {
+    public ImageBuffer decode(byte[] imageData, int imageType) throws java.io.IOException {
         int x, y, i;
         int w = getWidth(imageData, imageType);
         int h = getHeight(imageData, imageType);

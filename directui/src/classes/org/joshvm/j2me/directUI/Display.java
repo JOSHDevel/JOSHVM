@@ -74,6 +74,7 @@ public class Display {
 			}
 		} else {
 			device = new DefaultDisplayDevice();
+            ((DefaultDisplayDevice)device).init();
 		}
 
 		return getDisplay(device);

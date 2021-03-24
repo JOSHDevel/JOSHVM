@@ -29,7 +29,8 @@ extern "C"{
 #define pcsl_mem_free free
 
 javacall_result javacall_directui_init(void) {
-    return JAVACALL_OK;
+	//Return JAVACALL_FAIL means that there's no default native display support
+    return JAVACALL_FAIL;
 }
 
 javacall_result javacall_directui_finalize(void) {

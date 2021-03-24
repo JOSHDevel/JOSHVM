@@ -26,7 +26,7 @@ extern "C"{
 #endif
 
 javacall_result javacall_directui_init(void) {
-    return JAVACALL_OK;
+    return JAVACALL_FAIL;
 }
 
 javacall_result javacall_directui_finalize(void) {

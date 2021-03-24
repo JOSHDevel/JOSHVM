@@ -152,7 +152,7 @@ static javacall_result ensure_initialized() {
 }
 
 javacall_result javacall_directui_init(void) {
-    return JAVACALL_OK;
+    return ensure_initialized();
 }
 
 javacall_result javacall_directui_finalize(void) {

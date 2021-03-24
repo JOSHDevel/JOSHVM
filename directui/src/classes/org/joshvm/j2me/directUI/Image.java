@@ -26,39 +26,34 @@ public class Image {
     public static final int IMAGE_TYPE_JPG = 1;
     public static final int IMAGE_TYPE_BMP = 2;
 
-    private int imageType;
-    private byte imageData[];
-    private PlatformImageDecoder decoder;
+    private DecodableImage decodableImage;
 
     public Image(int type) {
-        if (type == IMAGE_TYPE_PNG ||
-            type == IMAGE_TYPE_JPG ||
-            type == IMAGE_TYPE_BMP) {
-            imageType = type;
-            decoder = new PlatformImageDecoder();
-            return;
-        }
-        throw new IllegalArgumentException();
+        decodableImage = new DecodableImage(type, null);
+    }
+
+    Image(DecodableImage decodableImage) {
+        this.decodableImage = decodableImage;
     }
 
     public int getImageType() {
-        return imageType;
+        return decodableImage.getImageType();
     }
 
     public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
+        decodableImage.setImageData(imageData);
     }
 
     public byte[] getImageData() {
-        return imageData;
+        return decodableImage.getImageData();
     }
 
     public int getWidth() {
-        return decoder.getWidth(imageData, imageType);
+        return decodableImage.getWidth();
     }
 
     public int getHeight() {
-        return decoder.getHeight(imageData, imageType);
+        return decodableImage.getHeight();
     }
 
 }

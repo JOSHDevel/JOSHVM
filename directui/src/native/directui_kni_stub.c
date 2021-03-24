@@ -22,6 +22,14 @@
 #include <kni_globals.h>
 
 KNIEXPORT
+KNI_RETURNTYPE_VOID
+Java_org_joshvm_j2me_directUI_DefaultDisplayDevice_init()
+{
+    KNI_ReturnVoid();
+}
+
+
+KNIEXPORT
 KNI_RETURNTYPE_INT
 Java_org_joshvm_j2me_directUI_DefaultDisplayDevice_getDisplayWidth0()
 {

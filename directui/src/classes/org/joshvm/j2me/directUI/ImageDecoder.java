@@ -20,15 +20,11 @@
  */
 package org.joshvm.j2me.directUI;
 
-public abstract class ImageDecoder {
-    public final static ImageDecoder getPlatformImageDecoder() {
-        return new PlatformImageDecoder();
-    }
-    
-    public abstract boolean isSupportedType(int imageType);
-    public abstract ImageBuffer decode(byte[] imageData, int imageType);
-    public abstract int getWidth(byte[] imageData, int imageType);
-    public abstract int getHeight(byte[] imageData, int imageType);
+public interface ImageDecoder {
+    public boolean isSupportedType(int imageType);
+    public ImageBuffer decode(byte[] imageData, int imageType) throws java.io.IOException;
+    public int getWidth(byte[] imageData, int imageType);
+    public int getHeight(byte[] imageData, int imageType);
 }
 
 

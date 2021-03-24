@@ -56,6 +56,20 @@ static int get_pcsl_string(jobject stringHandle, pcsl_string ** string)
 #endif
 
 KNIEXPORT
+KNI_RETURNTYPE_VOID
+Java_org_joshvm_j2me_directUI_DefaultDisplayDevice_init()
+{
+#if ENABLE_PCSL
+    if (JAVACALL_OK != javacall_directui_init()) {
+		KNI_ThrowNew(KNIIOException, "Default display device initializing failed");
+	}
+#endif
+
+    KNI_ReturnVoid();
+}
+
+
+KNIEXPORT
 KNI_RETURNTYPE_INT
 Java_org_joshvm_j2me_directUI_DefaultDisplayDevice_getDisplayWidth0()
 {

@@ -20,7 +20,8 @@
  */
 package org.joshvm.j2me.directUI;
 
-public class DefaultDisplayDevice implements DisplayDeviceAdaptor {
+class DefaultDisplayDevice implements DisplayDeviceAdaptor {
+    protected native void init() throws java.io.IOException;
 
     public int getDisplayWidth() {
         return getDisplayWidth0();

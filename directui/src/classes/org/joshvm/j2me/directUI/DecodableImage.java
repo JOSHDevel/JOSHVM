@@ -20,21 +20,62 @@
  */
 package org.joshvm.j2me.directUI;
 
-public class DecodableImage extends Image {
+public class DecodableImage {
+    private int imageType;
+    private byte imageData[];
     private ImageDecoder decoder;
     
-    public DecodableImage(int type) {
-       super(type);
-       decoder = new PlatformImageDecoder();
+    public DecodableImage(Image image, ImageDecoder decoder) {
+       this(image.getImageType(), decoder);
+       imageData = image.getImageData();
     }
 
     public DecodableImage(int type, ImageDecoder decoder) {
-       super(type);
-       this.decoder = decoder;
+       if (type == Image.IMAGE_TYPE_PNG ||
+            type == Image.IMAGE_TYPE_JPG ||
+            type == Image.IMAGE_TYPE_BMP ||
+            type == Image.IMAGE_TYPE_CUSTOME) {
+            imageType = type;
+            if (decoder == null) {
+                decoder = new PlatformImageDecoder();
+            }
+            this.decoder = decoder;
+            return;
+        }
+        throw new IllegalArgumentException();
     }
 
-    public ImageBuffer createImageBuffer() {
-        return decoder.decode(getImageData(), getImageType());
+    public ImageBuffer createImageBuffer() throws java.io.IOException {
+        byte[] data = getImageData();
+        if (data == null) {
+            throw new NullPointerException("Image data not set");
+        }
+        return decoder.decode(data, getImageType());
     }
+
+    public Image getImage() {
+        return new Image(this);
+    }
+    
+    int getImageType() {
+        return imageType;
+    }
+
+    void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+
+    byte[] getImageData() {
+        return imageData;
+    }
+
+    int getWidth() {
+        return decoder.getWidth(imageData, imageType);
+    }
+
+    int getHeight() {
+        return decoder.getHeight(imageData, imageType);
+    }
+    
 }
 

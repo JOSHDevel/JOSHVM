@@ -126,10 +126,6 @@ int main(int argc, char **argv) {
     argv += n;
   }
   
-#ifdef ENABLE_DIRECTUI
-  javacall_directui_init();
-#endif
-
   if (JVM_GetConfig(JVM_CONFIG_SLAVE_MODE) == KNI_FALSE) {
     // Run the VM in regular mode -- JVM_Start won't return until
     // the VM completes execution.
