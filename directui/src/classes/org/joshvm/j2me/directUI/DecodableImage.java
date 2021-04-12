@@ -45,12 +45,16 @@ public class DecodableImage {
         throw new IllegalArgumentException();
     }
 
-    public ImageBuffer createImageBuffer() throws java.io.IOException {
+    public ImageBuffer createImageBuffer(int imageBufferType) throws java.io.IOException {
         byte[] data = getImageData();
         if (data == null) {
             throw new NullPointerException("Image data not set");
         }
-        return decoder.decode(data, getImageType());
+        return decoder.decode(data, getImageType(), imageBufferType);
+    }
+
+    public ImageBuffer createImageBuffer(Display compatibleDisplay) throws java.io.IOException {        
+        return createImageBuffer(new ImageBuffer(0, 0, compatibleDisplay).getType());
     }
 
     public Image getImage() {

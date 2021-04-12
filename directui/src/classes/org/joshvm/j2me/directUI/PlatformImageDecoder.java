@@ -22,11 +22,26 @@ package org.joshvm.j2me.directUI;
 
 class PlatformImageDecoder implements ImageDecoder {
 
-    public ImageBuffer decode(byte[] imageData, int imageType) throws java.io.IOException {
+    /**
+     * Decode image from data array to {@link ImageBuffer}
+     * <p>
+     * Decoding error will result in a {@link IOException} being thrown.
+     * </p>
+     *
+     * @param imageData
+     *            The byte array which contains the image data to be decoded.
+     * @param imageType
+     *            The encoding type of the image data, e.g. Image.IMAGE_TYPE_JPG
+     * @param imageBufferType
+     *            The output image buffer type, e.g. ImageBuffer.TYPE_RGB565
+     * @throws IOException
+     *             Thrown when decoding error.
+     */
+    public ImageBuffer decode(byte[] imageData, int imageType, int imageBufferType) throws java.io.IOException {
         int x, y, i;
         int w = getWidth(imageData, imageType);
         int h = getHeight(imageData, imageType);
-        ImageBuffer imageBuffer = new ImageBuffer(w, h, imageType);
+        ImageBuffer imageBuffer = new ImageBuffer(w, h, imageBufferType);
         byte[] rawImageData = new byte[w*h*3]; //24bit raw
         decode0(imageData, 0, imageData.length, rawImageData, rawImageData.length, imageType);
         i = 0;

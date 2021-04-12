@@ -22,7 +22,7 @@ package org.joshvm.j2me.directUI;
 
 public interface ImageDecoder {
     public boolean isSupportedType(int imageType);
-    public ImageBuffer decode(byte[] imageData, int imageType) throws java.io.IOException;
+    public ImageBuffer decode(byte[] imageData, int imageType, int imageBufferType) throws java.io.IOException;
     public int getWidth(byte[] imageData, int imageType);
     public int getHeight(byte[] imageData, int imageType);
 }
