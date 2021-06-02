@@ -28,6 +28,7 @@ package java.nio;
  * A <code>Buffer</code> storing <code>short</code> data.
  */
 class ShortBufferImpl extends ShortBuffer {
+    private final ByteOrder byteOrder;
 
     ShortBufferImpl(ByteBufferImpl parent, int capacity,
                     short[] array, int arrayOffset,
@@ -38,6 +39,12 @@ class ShortBufferImpl extends ShortBuffer {
 	this.arrayOffset = arrayOffset;
 	this.capacity = this.limit = capacity;
 	this.position = 0;
+    
+        if (parent != null) {
+            this.byteOrder = parent.order();
+        } else {
+            this.byteOrder = ByteOrder.nativeOrder();
+        }
     }
 
     public short get() {
@@ -119,4 +126,9 @@ class ShortBufferImpl extends ShortBuffer {
         // Need revisit
         this.disposed = true;
     }
+
+    public ByteOrder order() {
+        return byteOrder;
+    }
+
 }

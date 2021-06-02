@@ -29,6 +29,8 @@ package java.nio;
  */
 class IntBufferImpl extends IntBuffer {
 
+    private final ByteOrder byteOrder;
+
     IntBufferImpl(ByteBufferImpl parent, int capacity,
                   int[] array, int arrayOffset,
                   boolean isDirect) {
@@ -38,6 +40,11 @@ class IntBufferImpl extends IntBuffer {
 	this.arrayOffset = arrayOffset;
 	this.capacity = this.limit = capacity;
 	this.position = 0;
+        if (parent != null) {
+            this.byteOrder = parent.order();
+        } else {
+            this.byteOrder = ByteOrder.nativeOrder();
+        }
     }
 
     public int get() {
@@ -118,5 +125,9 @@ class IntBufferImpl extends IntBuffer {
     public void dispose() {
         // Need revisit
         this.disposed = true;
+    }
+
+    public ByteOrder order() {
+        return byteOrder;
     }
 }

@@ -28,6 +28,7 @@ package java.nio;
  * A <code>Buffer</code> storing <code>float</code> data.
  */
 class FloatBufferImpl extends FloatBuffer {
+    private final ByteOrder byteOrder;
 
     FloatBufferImpl(ByteBufferImpl parent, int capacity,
                     float[] array, int arrayOffset,
@@ -38,6 +39,11 @@ class FloatBufferImpl extends FloatBuffer {
 	this.arrayOffset = arrayOffset;
 	this.capacity = this.limit = capacity;
 	this.position = 0;
+        if (parent != null) {
+            this.byteOrder = parent.order();
+        } else {
+            this.byteOrder = ByteOrder.nativeOrder();
+        }
     }
 
     public float get() {
@@ -119,4 +125,9 @@ class FloatBufferImpl extends FloatBuffer {
         // Need revisit
         this.disposed = true;
     }
+
+    public ByteOrder order() {
+        return byteOrder;
+    }
+
 }

@@ -65,6 +65,9 @@ class ByteBufferImpl extends ByteBuffer {
 
     native private void finalize();
 
+    private boolean bigEndian = true;
+    private boolean nativeByteOrder = (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN);
+
     ByteBufferImpl(int capacity, byte[] array, int arrayOffset,
                    ByteBuffer directParent) {
         this.array = array;
@@ -334,4 +337,17 @@ class ByteBufferImpl extends ByteBuffer {
         // Need revisit
         this.disposed = true;
     }
+
+
+    public final ByteOrder order() {
+        return bigEndian ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
+    }
+
+    public final ByteBuffer order(ByteOrder bo) {
+        bigEndian = (bo == ByteOrder.BIG_ENDIAN);
+        nativeByteOrder =
+            (bigEndian == (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN));
+        return this;
+    }
+
 }

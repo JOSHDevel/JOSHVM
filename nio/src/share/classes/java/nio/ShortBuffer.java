@@ -408,7 +408,12 @@ public abstract class ShortBuffer extends Buffer implements Comparable {
         if (length > this.limit - this.position) {
             throw new BufferOverflowException();
         }
-	if (isDirect && srci.isDirect) {
+        if (order() != srci.order()) {
+            //No optimization if order is not same to each other
+            for (int k = 0; k < length; k++) {
+                put(k, srci.get(k));                
+            }
+        } else if (isDirect && srci.isDirect) {
 	    ByteBufferImpl._copyBytes(srci.arrayOffset + (srci.position << 1),
 		       this.arrayOffset + (this.position << 1),
 		       (length << 1));
@@ -753,4 +758,18 @@ public abstract class ShortBuffer extends Buffer implements Comparable {
 	}
 	return this.remaining() - that.remaining();
     }
+
+    /**
+     * Retrieves this buffer's byte order.
+     *
+     * <p> The byte order of a short buffer created by allocation or by
+     * wrapping an existing <tt>short</tt> array is the {@link
+     * ByteOrder#nativeOrder </code>native order<code>} of the underlying
+     * hardware.  The byte order of a short buffer created as a <a
+     * href="ByteBuffer.html#views">view</a> of a byte buffer is that of the
+     * byte buffer at the moment that the view is created.  </p>
+     *
+     * @return  This buffer's byte order
+     */
+    public abstract ByteOrder order();
 }

@@ -600,7 +600,12 @@ public abstract class ByteBuffer extends Buffer implements Comparable {
         if (length > this.limit - this.position) {
             throw new BufferOverflowException();
         }
-        if (isDirect && srci.isDirect) {
+        if (order() != srci.order()) {
+            //No optimization if order is not same to each other
+            for (int k = 0; k < length; k++) {
+                put(k, srci.get(k));                
+            }
+        } else if (isDirect && srci.isDirect) {
             ByteBufferImpl._copyBytes(srci.arrayOffset + srci.position,
                                       this.arrayOffset + this.position,
                                       length);
@@ -1209,4 +1214,28 @@ public abstract class ByteBuffer extends Buffer implements Comparable {
      * @return A new float buffer.
      */
     public abstract FloatBuffer asFloatBuffer();
+
+    /**
+     * Retrieves this buffer's byte order.
+     *
+     * <p> The byte order is used when reading or writing multibyte values, and
+     * when creating buffers that are views of this byte buffer.  The order of
+     * a newly-created byte buffer is always {@link ByteOrder#BIG_ENDIAN
+     * BIG_ENDIAN}.  </p>
+     *
+     * @return  This buffer's byte order
+     */
+    public abstract ByteOrder order();
+
+    /**
+     * Modifies this buffer's byte order.  </p>
+     *
+     * @param  bo
+     *         The new byte order,
+     *         either {@link ByteOrder#BIG_ENDIAN BIG_ENDIAN}
+     *         or {@link ByteOrder#LITTLE_ENDIAN LITTLE_ENDIAN}
+     *
+     * @return  This buffer
+     */
+    public abstract ByteBuffer order(ByteOrder bo);
 }
