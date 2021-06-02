@@ -421,7 +421,7 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
                                       (this.position << 2),
                                       (length << 2));
 	} else if (isDirect && !srci.isDirect) {
-            if (array != null) {
+            if (srci.array != null) {
                 ByteBufferImpl._putFloats(this.arrayOffset +
                                           (this.position << 2),
                                           srci.array,

@@ -54,14 +54,14 @@ class ByteBufferImpl extends ByteBuffer {
                                 int[] dst, int offset, int length);
     static native void _putInt(int address, int value);
     static native void _putInts(int address,
-                                int[] dst, int offset, int length);
+                                int[] src, int offset, int length);
     
     static native float _getFloat(int address);
     static native void _getFloats(int address,
                                   float[] dst, int offset, int length);
     static native void _putFloat(int address, float value);
     static native void _putFloats(int address,
-                                  float[] dst, int offset, int length);
+                                  float[] src, int offset, int length);
 
     native private void finalize();
 

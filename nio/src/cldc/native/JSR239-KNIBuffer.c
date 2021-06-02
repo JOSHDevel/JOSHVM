@@ -286,7 +286,7 @@ Java_java_nio_ByteBufferImpl__1putInt() {
     KNI_ReturnVoid();
 }
 
-/*  static native void _putInts ( int address , int [ ] dst , int offset , int length ) ; */
+/*  static native void _putInts ( int address , int [ ] src , int offset , int length ) ; */
 KNIEXPORT KNI_RETURNTYPE_VOID
 Java_java_nio_ByteBufferImpl__1putInts() {
 
@@ -295,18 +295,18 @@ Java_java_nio_ByteBufferImpl__1putInts() {
     jint length = KNI_GetParameterAsInt(4);
 
     KNI_StartHandles(1);
-    KNI_DeclareHandle(dstHandle);
+    KNI_DeclareHandle(srcArrHandle);
 
 #ifdef DEBUG
     printf("Writing %d ints to %p\n", length, address);
     fflush(stdout);
 #endif
 
-    KNI_GetParameterAsObject(2, dstHandle);
+    KNI_GetParameterAsObject(2, srcArrHandle);
 
     offset *= sizeof(jint);
     length *= sizeof(jint);
-    KNI_GetRawArrayRegion(dstHandle, offset, length, (jbyte *) address);
+    KNI_GetRawArrayRegion(srcArrHandle, offset, length, (jbyte *) address);
 
     KNI_EndHandles();
     KNI_ReturnVoid();
@@ -369,7 +369,7 @@ Java_java_nio_ByteBufferImpl__1putFloat() {
     KNI_ReturnVoid();
 }
 
-/*  static native void _putFloats ( int address , float [ ] dst , int offset , int length ) ; */
+/*  static native void _putFloats ( int address , float [ ] src , int offset , int length ) ; */
 KNIEXPORT KNI_RETURNTYPE_VOID
 Java_java_nio_ByteBufferImpl__1putFloats() {
 
@@ -378,18 +378,18 @@ Java_java_nio_ByteBufferImpl__1putFloats() {
     jint length = KNI_GetParameterAsInt(4);
 
     KNI_StartHandles(1);
-    KNI_DeclareHandle(dstHandle);
+    KNI_DeclareHandle(srcArrHandle);
 
 #ifdef DEBUG
     printf("Writing %d floats to %p\n", length, address);
     fflush(stdout);
 #endif
 
-    KNI_GetParameterAsObject(2, dstHandle);
+    KNI_GetParameterAsObject(2, srcArrHandle);
 
     offset *= sizeof(jfloat);
     length *= sizeof(jfloat);
-    KNI_GetRawArrayRegion(dstHandle, offset, length, (jbyte *) address);
+    KNI_GetRawArrayRegion(srcArrHandle, offset, length, (jbyte *) address);
 
     KNI_EndHandles();
     KNI_ReturnVoid();
