@@ -209,6 +209,10 @@ else
 ENABLE_CFLAGS += -DENABLE_STARTUP_RUN_GREENLANDJAR=1
 endif
 
+ifeq ($(ENABLE_NIO), true)
+include $(NIO_DIR)/makefiles/vm_module.make
+endif
+
 MakeDepsMain_win32    = WinGammaPlatform
 MakeDepsMain_wince    = WinCEGammaPlatform
 MakeDepsMain_linux    = UnixPlatform
@@ -338,6 +342,11 @@ endif
 ifeq ($(ENABLE_MEDIA), true)
 Obj_Files           +=         $(MEDIA_Obj_Files)
 ENABLE_CFLAGS       +=         -DENABLE_MEDIA
+endif
+
+ifeq ($(ENABLE_NIO), true)
+Obj_Files           +=         $(NIO_Obj_Files)
+ENABLE_CFLAGS       +=         -DENABLE_NIO
 endif
 
 ifeq ($(ENABLE_SECURITY), true)

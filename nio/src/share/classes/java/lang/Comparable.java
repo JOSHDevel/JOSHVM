@@ -33,7 +33,7 @@ package java.lang;
  * <p><b><i>This interface is provided as part of the JSR 239 NIO Buffer
  * building block.</i></b>
  *
- * <p> <b><i>This interface is used by the <code>org.joshvm.util.ByteBuffer</code>,
+ * <p> <b><i>This interface is used by the <code>java.nio.ByteBuffer</code>,
  * <code>ShortBuffer</code>, <code>IntBuffer</code>, and
  * <code>FloatBuffer</code> classes.  The documentation that follows
  * is taken from Java Standard Edition version 1.4.2 and may not
@@ -147,4 +147,3 @@ public interface Comparable {
      */
     public int compareTo(Object o);
 }
-
