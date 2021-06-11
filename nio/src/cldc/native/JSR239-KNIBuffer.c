@@ -395,6 +395,87 @@ Java_java_nio_ByteBufferImpl__1putFloats() {
     KNI_ReturnVoid();
 }
 
+KNIEXPORT KNI_RETURNTYPE_LONG
+Java_java_nio_ByteBufferImpl__1getLong() {
+
+    jint address = KNI_GetParameterAsInt(1);
+
+    jlong returnValue = *((jlong *) address);
+#ifdef DEBUG
+    printf("Reading a long from %p -> %ll\n", address, returnValue);
+    fflush(stdout);
+#endif
+
+    KNI_ReturnLong(returnValue);
+}
+
+
+KNIEXPORT KNI_RETURNTYPE_VOID
+Java_java_nio_ByteBufferImpl__1getLongs() {
+
+    jint address = KNI_GetParameterAsInt(1);
+    jint offset = KNI_GetParameterAsInt(3);
+    jint length = KNI_GetParameterAsInt(4);
+
+    KNI_StartHandles(1);
+    KNI_DeclareHandle(dstHandle);
+
+#ifdef DEBUG
+    printf("Reading %d longs from %p\n", length, address);
+    fflush(stdout);
+#endif
+
+    KNI_GetParameterAsObject(2, dstHandle);
+
+    offset *= sizeof(jlong);
+    length *= sizeof(jlong);
+    KNI_SetRawArrayRegion(dstHandle, offset, length, (jbyte *) address);
+
+    KNI_EndHandles();
+    KNI_ReturnVoid();
+}
+
+KNIEXPORT KNI_RETURNTYPE_VOID
+Java_java_nio_ByteBufferImpl__1putLong() {
+
+    jint address = KNI_GetParameterAsInt(1);
+    jlong value = KNI_GetParameterAsLong(2);
+
+#ifdef DEBUG
+    printf("Writing a long (%ll) to %p\n", value, address);
+    fflush(stdout);
+#endif
+    *((jlong *) address) = value;
+
+    KNI_ReturnVoid();
+}
+
+KNIEXPORT KNI_RETURNTYPE_VOID
+Java_java_nio_ByteBufferImpl__1putLongs() {
+
+    jint address = KNI_GetParameterAsInt(1);
+    jint offset = KNI_GetParameterAsInt(3);
+    jint length = KNI_GetParameterAsInt(4);
+
+    KNI_StartHandles(1);
+    KNI_DeclareHandle(srcArrHandle);
+
+#ifdef DEBUG
+    printf("Writing %d longs to %p\n", length, address);
+    fflush(stdout);
+#endif
+
+    KNI_GetParameterAsObject(2, srcArrHandle);
+
+    offset *= sizeof(jlong);
+    length *= sizeof(jlong);
+    KNI_GetRawArrayRegion(srcArrHandle, offset, length, (jbyte *) address);
+
+    KNI_EndHandles();
+    KNI_ReturnVoid();
+}
+
+
 /* BufferManager */
 
 /*  static native void _getBytes ( int address , byte [ ] dst , int offset , int length ) ; */
