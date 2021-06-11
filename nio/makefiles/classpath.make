@@ -38,7 +38,8 @@ MODULE_NIO_API_JAVA_FILES = \
     ${NIO_SHARE_JAVA_DIR}/java/nio/FloatBuffer.java \
     ${NIO_SHARE_JAVA_DIR}/java/nio/IntBuffer.java \
     ${NIO_SHARE_JAVA_DIR}/java/nio/ShortBuffer.java \
-    ${NIO_SHARE_JAVA_DIR}/java/nio/ByteOrder.java
+    ${NIO_SHARE_JAVA_DIR}/java/nio/ByteOrder.java \
+    ${NIO_SHARE_JAVA_DIR}/java/nio/LongBuffer.java
 
 ifneq ($(USE_JSR_177), true)
 # IMPL_NOTE: temporary fix: remove this class as it is also defined by JSR 177
@@ -54,7 +55,8 @@ MODULE_NIO_IMPL_JAVA_FILES += \
     ${NIO_CLDC_IMPL_JAVA_DIR}/java/nio/ByteBufferImpl.java \
     ${NIO_CLDC_IMPL_JAVA_DIR}/java/nio/FloatBufferImpl.java \
     ${NIO_CLDC_IMPL_JAVA_DIR}/java/nio/IntBufferImpl.java \
-    ${NIO_CLDC_IMPL_JAVA_DIR}/java/nio/ShortBufferImpl.java
+    ${NIO_CLDC_IMPL_JAVA_DIR}/java/nio/ShortBufferImpl.java \
+    ${NIO_CLDC_IMPL_JAVA_DIR}/java/nio/LongBufferImpl.java
 
 # GL/EGL Impl classes
 #

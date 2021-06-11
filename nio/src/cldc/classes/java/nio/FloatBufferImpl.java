@@ -60,7 +60,11 @@ class FloatBufferImpl extends FloatBuffer {
 
         int bytePtr = arrayOffset + (index << 2);
 	if (isDirect) {
-	    return ByteBufferImpl._getFloat(bytePtr);
+	    if (order() == ByteOrder.nativeOrder()) {
+    	    return ByteBufferImpl._getFloat(bytePtr);
+        } else {
+            return parent.getFloat(index<<2);
+        }
 	} else if (array != null) {
 	   return array[arrayOffset + index]; 
 	} else {
@@ -82,7 +86,11 @@ class FloatBufferImpl extends FloatBuffer {
 
         int bytePtr = arrayOffset + (index << 2);
 	if (isDirect) {
-	    ByteBufferImpl._putFloat(bytePtr, f);
+	    if (order() == ByteOrder.nativeOrder()) {
+	        ByteBufferImpl._putFloat(bytePtr, f);
+        } else {
+            parent.putFloat(index<<2, f);
+        }
 	} else if (array != null) {
 	    array[arrayOffset + index] = f;
 	} else {

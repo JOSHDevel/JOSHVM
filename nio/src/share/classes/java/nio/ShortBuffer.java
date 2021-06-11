@@ -320,7 +320,16 @@ public abstract class ShortBuffer extends Buffer implements Comparable {
 
         int bytePtr = arrayOffset + (position << 1);
 	if (isDirect) {
-	    ByteBufferImpl._getShorts(bytePtr, dst, offset, length);
+	    if (order() == ByteOrder.nativeOrder()) {
+    	    ByteBufferImpl._getShorts(bytePtr, dst, offset, length);
+        } else {
+            bytePtr -= arrayOffset;
+            for (int i = 0; i < length; i++) {
+                 dst[offset++] = parent.getShort(bytePtr);
+                 bytePtr += 2;
+            }
+        }
+
 	} else if (array != null) {
 	    System.arraycopy(array, arrayOffset + position,
 			     dst, offset, length);
@@ -408,7 +417,9 @@ public abstract class ShortBuffer extends Buffer implements Comparable {
         if (length > this.limit - this.position) {
             throw new BufferOverflowException();
         }
-        if (order() != srci.order()) {
+        if ((order() != srci.order()) || 
+            ( isDirect && order() != ByteOrder.nativeOrder()) ||
+            ( srci.isDirect && srci.order() != ByteOrder.nativeOrder()))  {
             //No optimization if order is not same to each other
             for (int k = 0; k < length; k++) {
                 put(k, srci.get(k));                
@@ -533,7 +544,15 @@ public abstract class ShortBuffer extends Buffer implements Comparable {
 
         int bytePtr = arrayOffset + (position << 1);
 	if (isDirect) {
-	    ByteBufferImpl._putShorts(bytePtr, src, offset, length);
+        if (order() == ByteOrder.nativeOrder()) {
+	        ByteBufferImpl._putShorts(bytePtr, src, offset, length);
+        } else {
+            bytePtr -= arrayOffset;
+            for (int i = 0; i < length; i++) {
+                parent.putShort(bytePtr, src[offset++]);
+                bytePtr += 2;
+            }
+        }
 	} else if (array != null) {
 	    System.arraycopy(src, offset,
 			     array, arrayOffset + position, length);

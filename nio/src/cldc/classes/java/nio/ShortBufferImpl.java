@@ -61,7 +61,11 @@ class ShortBufferImpl extends ShortBuffer {
 
         int bytePtr = arrayOffset + (index << 1);
 	if (isDirect) {
-	    return ByteBufferImpl._getShort(bytePtr);
+        if (order() == ByteOrder.nativeOrder()) {
+    	    return ByteBufferImpl._getShort(bytePtr);
+        } else {
+            return parent.getShort(index<<1);
+        }
 	} else if (array != null) {
 	   return array[arrayOffset + index];
 	} else {
@@ -83,7 +87,11 @@ class ShortBufferImpl extends ShortBuffer {
 
         int bytePtr = arrayOffset + (index << 1);
 	if (isDirect) {
-	    ByteBufferImpl._putShort(bytePtr, s);
+        if (order() == ByteOrder.nativeOrder()) {
+	        ByteBufferImpl._putShort(bytePtr, s);
+        } else {
+            parent.putShort(index<<1, s);
+        }
 	} else if (array != null) {
 	    array[arrayOffset + index] = s;
 	} else {

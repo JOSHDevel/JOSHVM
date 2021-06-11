@@ -61,7 +61,11 @@ class IntBufferImpl extends IntBuffer {
 
         int bytePtr = arrayOffset + (index << 2);
 	if (isDirect) {
-            return ByteBufferImpl._getInt(bytePtr);
+        if (order() == ByteOrder.nativeOrder()) {
+    	    return ByteBufferImpl._getInt(bytePtr);
+        } else {
+            return parent.getInt(index<<2);
+        }
 	} else if (array != null) {
             return array[arrayOffset + index]; 
 	} else {
@@ -83,7 +87,11 @@ class IntBufferImpl extends IntBuffer {
 
         int bytePtr = arrayOffset + (index << 2);
 	if (isDirect) {
-	    ByteBufferImpl._putInt(bytePtr, i);
+	    if (order() == ByteOrder.nativeOrder()) {
+	        ByteBufferImpl._putInt(bytePtr, i);
+        } else {
+            parent.putInt(index<<2, i);
+        }
 	} else if (array != null) {
 	    array[arrayOffset + index] = i;
 	} else {

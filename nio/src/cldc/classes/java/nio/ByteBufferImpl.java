@@ -63,6 +63,13 @@ class ByteBufferImpl extends ByteBuffer {
     static native void _putFloats(int address,
                                   float[] src, int offset, int length);
 
+    static native void _putLong(int address, long value);
+    static native void _putLongs(int address,
+                                  long[] dst, int offset, int length);
+    static native long _getLong(int address);
+    static native void _getLongs(int address,
+                                  long[] dst, int offset, int length);
+
     native private void finalize();
 
     private boolean bigEndian = true;
@@ -96,6 +103,12 @@ class ByteBufferImpl extends ByteBuffer {
     public ShortBuffer asShortBuffer() {
         int pos = position + (isDirect ? arrayOffset : 0);
         return new ShortBufferImpl(this, remaining() >> 1,
+                                   null, pos, isDirect);
+    }
+
+    public LongBuffer asLongBuffer() {
+        int pos = position + (isDirect ? arrayOffset : 0);
+        return new LongBufferImpl(this, remaining() >> 3,
                                    null, pos, isDirect);
     }
  
@@ -142,6 +155,65 @@ class ByteBufferImpl extends ByteBuffer {
     
     public float getFloat(int index) {
         return Float.intBitsToFloat(getInt(index));
+    }
+
+    public long getLong() {
+        if (position >= limit - 7) {
+            throw new BufferUnderflowException();
+        }
+        long x = getLong(position);
+        position += 8;
+        return x;
+    }
+
+    public long getLong(int index) {
+        if (index < 0 || index >= limit - 7) {
+            throw new IndexOutOfBoundsException();
+        }
+        long x0, x1, x2, x3, x4, x5, x6, x7;
+	if (isDirect) {
+            index += arrayOffset;
+	    x0 = _getByte(index++);
+	    x1 = _getByte(index++);
+	    x2 = _getByte(index++);
+	    x3 = _getByte(index++);
+        x4 = _getByte(index++);
+	    x5 = _getByte(index++);
+	    x6 = _getByte(index++);
+	    x7 = _getByte(index);
+	} else {
+            index += arrayOffset;
+            x0 =  array[index++]; 
+            x1 =  array[index++]; 
+            x2 =  array[index++]; 
+            x3 =  array[index++]; 
+            x4 =  array[index++]; 
+            x5 =  array[index++]; 
+            x6 =  array[index++]; 
+            x7 =  array[index++]; 
+	}
+
+        if (isBigEndian()) {
+            return (((x0 & 0xff) << 56) |
+                    ((x1 & 0xff) << 48) |
+                    ((x2 & 0xff) << 40) |
+                    ((x3 & 0xff) << 32) |
+                    ((x4 & 0xff) << 24) |
+                    ((x5 & 0xff) << 16) |
+                    ((x6 & 0xff) <<  8) |
+                     (x7 & 0xff)
+                    );
+        } else {
+            return (((x7 & 0xff) << 56) |
+                    ((x6 & 0xff) << 48) |
+                    ((x5 & 0xff) << 40) |
+                    ((x4 & 0xff) << 32) |
+                    ((x3 & 0xff) << 24) |
+                    ((x2 & 0xff) << 16) |
+                    ((x1 & 0xff) <<  8) |
+                     (x0 & 0xff)
+                    );
+        }
     }
 
     public int getInt() {
@@ -222,6 +294,67 @@ class ByteBufferImpl extends ByteBuffer {
 
     public ByteBuffer putFloat(int index, float value) {
         return putInt(index, Float.floatToIntBits(value));
+    }
+
+    
+    public ByteBuffer putLong(long value) {
+        if (position >= limit - 7) {
+            throw new BufferOverflowException();
+        }
+        putLong(position, value);
+        position += 8;
+        return this;
+    }
+    
+    public ByteBuffer putLong(int index, long value) {
+        if (index < 0 || index >= limit - 7) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        byte x0, x1, x2, x3, x4, x5, x6, x7;
+        if (isBigEndian()) {
+            x0 = (byte)(value >> 56);
+            x1 = (byte)(value >> 48);
+            x2 = (byte)(value >> 40);
+            x3 = (byte)(value >> 32);
+            x4 = (byte)(value >> 24);
+            x5 = (byte)(value >> 16);
+            x6 = (byte)(value >> 8);
+            x7 = (byte)(value);
+        } else {
+            x7 = (byte)(value >> 56);
+            x6 = (byte)(value >> 48);
+            x5 = (byte)(value >> 40);
+            x4 = (byte)(value >> 32);
+            x3 = (byte)(value >> 24);
+            x2 = (byte)(value >> 16);
+            x1 = (byte)(value >> 8);
+            x0 = (byte)(value);
+        }
+
+	if (isDirect) {
+            index += arrayOffset;
+	    _putByte(index++, x0);
+	    _putByte(index++, x1);
+	    _putByte(index++, x2);
+	    _putByte(index++, x3);
+        _putByte(index++, x4);
+	    _putByte(index++, x5);
+	    _putByte(index++, x6);
+	    _putByte(index,   x7);
+	} else {
+            index += arrayOffset;
+            array[index++] = x0;
+            array[index++] = x1;
+            array[index++] = x2;
+            array[index++] = x3;
+            array[index++] = x4;
+            array[index++] = x5;
+            array[index++] = x6;
+            array[index  ] = x7;
+	}
+        
+        return this;
     }
 
     public ByteBuffer putInt(int value) {
@@ -317,8 +450,8 @@ class ByteBufferImpl extends ByteBuffer {
 	return arrayOffset;
     }
 
-    public static boolean isBigEndian() {
-        return ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
+    public boolean isBigEndian() {
+        return bigEndian;
     }
 
 //     public String toString() {
@@ -345,8 +478,8 @@ class ByteBufferImpl extends ByteBuffer {
 
     public final ByteBuffer order(ByteOrder bo) {
         bigEndian = (bo == ByteOrder.BIG_ENDIAN);
-        nativeByteOrder =
-            (bigEndian == (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN));
+        //nativeByteOrder =
+        //    (bigEndian == (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN));
         return this;
     }
 

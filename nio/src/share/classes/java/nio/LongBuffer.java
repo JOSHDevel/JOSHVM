@@ -1,104 +1,100 @@
 /*
- * Copyright  1990-2009 Sun Microsystems, Inc. All Rights Reserved.
+ * Copyright (C) Max Mu
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
- * 
+ *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License version
- * 2 only, as published by the Free Software Foundation.
- * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License version 2 for more details (a copy is
- * included at /legal/license.txt).
- * 
+ * modify it under the terms of the GNU General Public License
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License version 2 for more details.
+ *
  * You should have received a copy of the GNU General Public License
- * version 2 along with this work; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA
- * 
- * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
- * Clara, CA 95054 or visit www.sun.com if you need additional
- * information or have any questions.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Please visit www.joshvm.org if you need additional information or
+ * have any questions.
  */
 
 package java.nio;
 
 /** 
- * A float buffer.
+ * A long buffer.
  *
- * <p> This class is provided as part of the JSR 239 NIO Buffer
- * building block. It is a subset of the
- * <code>java.nio.FloatBuffer</code> class in Java(TM) Standard Edition
+ * <p> This class is a subset of the
+ * <code>java.nio.LongBuffer</code> class in Java(TM) Standard Edition
  * version 1.4.2.  Differences are noted in <b><i>bold italic</i></b>.
  * The class documentation may make reference to classes that are not
  * present in the building block.
  *
  * <p><b><i> I/O channels, marking and resetting, and read-only buffers
- * are not supported.  Allocation of non-direct float buffers,
+ * are not supported.  Allocation of non-direct long buffers,
  * compaction, and duplication are not supported.  
  * The following methods are omitted:
  *
  * <ul>
- * <li><code>FloatBuffer allocate(int capacity)</code></li>
- * <li><code>FloatBuffer compact()</code></li>
- * <li><code>FloatBuffer duplicate()</code></li>
+ * <li><code>LongBuffer allocate(int capacity)</code></li>
+ * <li><code>LongBuffer compact()</code></li>
+ * <li><code>LongBuffer duplicate()</code></li>
  * <li><code>Buffer mark()</code></li>
  * <li><code>Buffer reset()</code></li>
  * <li><code>boolean isReadOnly()</code></li>
- * <li><code>FloatBuffer asReadOnlyBuffer()</code></li>
+ * <li><code>LongBuffer asReadOnlyBuffer()</code></li>
  * </ul>
  * </i></b>
  *
  * <p> This class defines four categories of operations upon
- * float buffers:
+ * long buffers:
  *
  * <ul>
  *
  *   <li><p> Absolute and relative {@link #get() </code><i>get</i><code>} and
- *   {@link #put(float) </code><i>put</i><code>} methods that read and write
- *   single floats; </p></li>
+ *   {@link #put(long) </code><i>put</i><code>} methods that read and write
+ *   single long; </p></li>
  *
- *   <li><p> Relative {@link #get(float[]) </code><i>bulk get</i><code>}
- *   methods that transfer contiguous sequences of floats from this buffer
+ *   <li><p> Relative {@link #get(long[]) </code><i>bulk get</i><code>}
+ *   methods that transfer contiguous sequences of longs from this buffer
  *   into an array;</li>
  *
- *   <li><p> Relative {@link #put(float[]) </code><i>bulk put</i><code>}
- *   methods that transfer contiguous sequences of floats from a
- *   float array or some other float
+ *   <li><p> Relative {@link #put(long[]) </code><i>bulk put</i><code>}
+ *   methods that transfer contiguous sequences of longs from a
+ *   long array or some other long
  *   buffer into this buffer; &#32;and </p></li>
  * 
  *   <li><p> Methods for compacting, duplicating, and {@link #slice
- *   slicing} a float buffer.  <b><i>JSR 239 does
+ *   slicing} a long buffer.  <b><i>This implementation does
  *   not support compacting and duplicating buffers.</i></b> </p></li>
- *
+*
  * </ul>
  *
- * <p> Float buffers can be created either by <i>allocation</i>, which
- * allocates space for the buffer's content, by {@link #wrap(float[])
- * </code><i>wrapping</i><code>} an existing float array into a
+ * <p> Long buffers can be created either by <i>allocation</i>, which
+ * allocates space for the buffer's content, by {@link #wrap(long[])
+ * </code><i>wrapping</i><code>} an existing long array into a
  * buffer, or by creating a <a
  * href="ByteBuffer.html#view"><i>view</i></a> of an existing byte
- * buffer. <b><i>JSR 239 supports allocation of
+ * buffer. <b><i>This implementation supports allocation of
  * <code>ByteBuffer</code>s only.</i></b>
  *
- * <p> Like a byte buffer, a float buffer is either <a
+ * <p> Like a byte buffer, a long buffer is either <a
  * href="ByteBuffer.html#direct"><i>direct</i> or <i>non-direct</i></a>.  A
- * float buffer created via the <tt>wrap</tt> methods of this class will
- * be non-direct.  A float buffer created as a view of a byte buffer will
+ * long buffer created via the <tt>wrap</tt> methods of this class will
+ * be non-direct.  A long buffer created as a view of a byte buffer will
  * be direct if, and only if, the byte buffer itself is direct.  Whether or not
- * a float buffer is direct may be determined by invoking the {@link
+ * a long buffer is direct may be determined by invoking the {@link
  * #isDirect isDirect} method.  </p>
  *
  * <p> Methods in this class that do not otherwise have a value to return are
  * specified to return the buffer upon which they are invoked.  This allows
  * method invocations to be chained.
  */
-public abstract class FloatBuffer extends Buffer implements Comparable {
+public abstract class LongBuffer extends Buffer implements Comparable {
 
-    ByteBufferImpl parent;
+    ByteBufferImpl parent = null;
 
-    float[] array;
+    long[] array;
     int arrayOffset;
 
     boolean isDirect;
@@ -106,14 +102,14 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
     boolean disposed = false;
 
     /**
-     * Constructs a new <code>FloatBuffer</code>.
-     */
-    FloatBuffer() {}
+     * Constructs a new <code>LongBuffer</code>.
+     */ 
+    LongBuffer() {}
 
     /**
-     * Wraps a float array into a buffer.
+     * Wraps a long array into a buffer.
      *
-     * <p> The new buffer will be backed by the given float array;
+     * <p> The new buffer will be backed by the given long array;
      * that is, modifications to the buffer will cause the array to be modified
      * and vice versa.  The new buffer's capacity will be
      * <tt>array.length</tt>, its position will be <tt>offset</tt>, its limit
@@ -135,29 +131,29 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      *         <tt>array.length - offset</tt>.
      *         The new buffer's limit will be set to <tt>offset + length</tt>.
      *
-     * @return  The new float buffer
+     * @return  The new long buffer
      *
      * @throws  IndexOutOfBoundsException
      *          If the preconditions on the <tt>offset</tt> and <tt>length</tt>
      *          parameters do not hold
      */
-    public static FloatBuffer wrap(float[] array, int offset, int length) {
+    public static LongBuffer wrap(long[] array, int offset, int length) {
         if (offset < 0 || offset > array.length ||
             length < 0 || length > array.length - offset) {
             throw new IndexOutOfBoundsException();
         }
 
-        FloatBufferImpl fbi =
-            new FloatBufferImpl(null, array.length, array, 0, false);
-        fbi.position(offset);
-        fbi.limit(offset + length);
-        return fbi;
+        LongBufferImpl sbi =
+            new LongBufferImpl(null, array.length, array, 0, false);
+        sbi.position(offset);
+        sbi.limit(offset + length);
+        return sbi;
     }
 
     /**
-     * Wraps a float array into a buffer.
+     * Wraps a long array into a buffer.
      *
-     * <p> The new buffer will be backed by the given float array;
+     * <p> The new buffer will be backed by the given long array;
      * that is, modifications to the buffer will cause the array to be modified
      * and vice versa.  The new buffer's capacity and limit will be
      * <tt>array.length</tt>, its position will be zero, and its mark will be
@@ -168,54 +164,54 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * @param  array
      *         The array that will back this buffer
      *
-     * @return  The new float buffer
+     * @return  The new long buffer
      */
-    public static FloatBuffer wrap(float[] array) {
-	return wrap(array, 0, array.length);
+    public static LongBuffer wrap(long[] array) {
+    	return wrap(array, 0, array.length);
     }
 
     /**
-     * Creates a new float buffer whose content is a shared
+     * Creates a new long buffer whose content is a shared
      * subsequence of this buffer's content.
      *
      * <p> The content of the new buffer will start at this buffer's
      * current position.  Changes to this buffer's content will be
      * visible in the new buffer, and vice versa; the two buffers'
-     * position, limit, and mark values will be independent. <b><i>JSR
-     * 239 does not support the mark.</i></b>
+     * position, limit, and mark values will be independent. <b><i>This 
+     * implementatin does not support the mark.</i></b>
      *
      * <p> The new buffer's position will be zero, its capacity and
-     * its limit will be the number of floats remaining in this
+     * its limit will be the number of longs remaining in this
      * buffer, and its mark will be undefined.  The new buffer will be
      * direct if, and only if, this buffer is direct, and it will be
-     * read-only if, and only if, this buffer is read-only. <b><i>JSR
-     * 239 does not support the mark or read-only buffers.</i></b>
+     * read-only if, and only if, this buffer is read-only. <b><i>This
+     * implementation does not support the mark or read-only buffers.</i></b>
      * </p>
      *
-     * @return The new float buffer.
+     * @return The new long buffer.
      */
-    public abstract FloatBuffer slice();
+    public abstract LongBuffer slice();
 
     /**
-     * Relative <i>get</i> method.  Reads the float at this
+     * Relative <i>get</i> method.  Reads the long at this
      * buffer's current position, and then increments the
      * position. </p>
      *
-     * @return The float at the buffer's current position.
+     * @return The long at the buffer's current position.
      *
      * @throws BufferUnderflowException If the buffer's current
      * position is not smaller than its limit.
      */
-    public abstract float get();
+    public abstract long get();
 
     /**
      * Relative <i>put</i> method&nbsp;&nbsp;<i>(optional
      * operation)</i>.
      * 
-     * <p> Writes the given float into this buffer at the current
+     * <p> Writes the given long into this buffer at the current
      * position, and then increments the position. </p>
      *
-     * @param f The float to be written.
+     * @param s The long to be written.
      *
      * @return This buffer.
      *
@@ -223,33 +219,33 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * position is not smaller than its limit.
      *
      * @throws ReadOnlyBufferException If this buffer is
-     * read-only. <b><i>JSR 239 does not support read-only buffer or
+     * read-only. <b><i>This implementation does not support read-only buffer or
      * the <code>ReadOnlyBufferException</code> class.</i></b>
      */
-    public abstract FloatBuffer put(float f);
+    public abstract LongBuffer put(long s);
 
     /**
-     * Absolute <i>get</i> method.  Reads the float at the given
+     * Absolute <i>get</i> method.  Reads the long at the given
      * index. </p>
      *
-     * @param  index The index from which the float will be read.
+     * @param  index The index from which the long will be read.
      *
-     * @return  The float at the given index.
+     * @return  The long at the given index.
      *
      * @throws IndexOutOfBoundsException If <tt>index</tt> is negative
      * or not smaller than the buffer's limit.
      */
-    public abstract float get(int index);
+    public abstract long get(int index);
 
     /**
      * Absolute <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
      * 
-     * <p> Writes the given float into this buffer at the given
+     * <p> Writes the given long into this buffer at the given
      * index. </p>
      *
-     * @param index The index at which the float will be written.
+     * @param index The index at which the long will be written.
      *
-     * @param f The float value to be written.
+     * @param s The long value to be written.
      *
      * @return This buffer.
      *
@@ -257,23 +253,23 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * or not smaller than the buffer's limit.
      *
      * @throws ReadOnlyBufferException If this buffer is
-     * read-only. <b><i>JSR 239 does not support read-only buffer or
+     * read-only. <b><i>This implementation does not support read-only buffer or
      * the <code>ReadOnlyBufferException</code> class.</i></b>
      */
-    public abstract FloatBuffer put(int index, float f);
+    public abstract LongBuffer put(int index, long s);
     
     /**
      * Relative bulk <i>get</i> method.
      *
-     * <p> This method transfers floats from this buffer into the
-     * given destination array.  If there are fewer floats
+     * <p> This method transfers longs from this buffer into the
+     * given destination array.  If there are fewer longs
      * remaining in the buffer than are required to satisfy the
      * request, that is, if
      * <tt>length</tt>&nbsp;<tt>&gt;</tt>&nbsp;<tt>remaining()</tt>,
-     * then no floats are transferred and a {@link
+     * then no longs are transferred and a {@link
      * BufferUnderflowException} is thrown.
      *
-     * <p> Otherwise, this method copies <tt>length</tt> floats
+     * <p> Otherwise, this method copies <tt>length</tt> longs
      * from this buffer into the given array, starting at the current
      * position of this buffer and at the given offset in the array.
      * The position of this buffer is then incremented by
@@ -288,28 +284,28 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      *         dst[i] = src.get(); </pre>
      *
      * except that it first checks that there are sufficient
-     * floats in this buffer and it is potentially much more
+     * longs in this buffer and it is potentially much more
      * efficient. </p>
      *
-     * @param dst The array into which floats are to be written.
+     * @param dst The array into which longs are to be written.
      *
      * @param offset The offset within the array of the first
-     * float to be written; must be non-negative and no larger
+     * long to be written; must be non-negative and no larger
      * than <tt>dst.length</tt>.
      *
-     * @param length The maximum number of floats to be written
+     * @param length The maximum number of longs to be written
      * to the given array; must be non-negative and no larger than
      * <tt>dst.length - offset</tt>.
      *
      * @return This buffer.
      *
      * @throws BufferUnderflowException If there are fewer than
-     * <tt>dst.length</tt> floats remaining in this buffer.
+     * <tt>length</tt> longs remaining in this buffer.
      *
      * @throws IndexOutOfBoundsException If the preconditions on the
      * <tt>offset</tt> and <tt>length</tt> parameters do not hold.
      */
-    public FloatBuffer get(float[] dst, int offset, int length) {
+    public LongBuffer get(long[] dst, int offset, int length) {
         if (offset < 0 || offset > dst.length ||
             length < 0 || length > dst.length - offset) {
             throw new IndexOutOfBoundsException();
@@ -318,34 +314,34 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
             throw new BufferUnderflowException();
         }
 
-        int bytePtr = arrayOffset + (position << 2);
-	if (isDirect) {
-	    if (order() == ByteOrder.nativeOrder()) {
-    	    ByteBufferImpl._getFloats(bytePtr, dst, offset, length);
-        } else {
-            bytePtr -= arrayOffset;
-            for (int i = 0; i < length; i++) {
-                 dst[offset++] = parent.getFloat(bytePtr);
-                 bytePtr += 4;
+        int bytePtr = arrayOffset + (position << 3);
+    	if (isDirect) {
+            if (order() == ByteOrder.nativeOrder()) {
+    	        ByteBufferImpl._getLongs(bytePtr, dst, offset, length);
+            } else {
+                bytePtr -= arrayOffset;
+                for (int i = 0; i < length; i++) {
+                    dst[offset++] = parent.getLong(bytePtr);
+                    bytePtr += 8;
+                }
             }
-        }
-	} else if (array != null) {
-	    System.arraycopy(array, arrayOffset + position,
-			     dst, offset, length);
-	} else {
-            for (int i = 0; i < length; i++) {
-                dst[offset++] = parent.getFloat(bytePtr);
-                bytePtr += 4;
-            }
-	}
-	position += length;
-	return this;
+    	} else if (array != null) {
+    	    System.arraycopy(array, arrayOffset + position,
+    			     dst, offset, length);
+    	} else {
+                for (int i = 0; i < length; i++) {
+                    dst[offset++] = parent.getLong(bytePtr);
+                    bytePtr += 8;
+                }
+    	}
+    	position += length;
+    	return this;
     }
 
     /**
      * Relative bulk <i>get</i> method.
      *
-     * <p> This method transfers floats from this buffer into the
+     * <p> This method transfers longs from this buffer into the
      * given destination array.  An invocation of this method of the
      * form <tt>src.get(a)</tt> behaves in exactly the same way as the
      * invocation
@@ -356,26 +352,26 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * @return This buffer.
      *
      * @throws BufferUnderflowException If there are fewer than
-     * <tt>length</tt> floats remaining in this buffer.
+     * <tt>dst.length</tt> longs remaining in this buffer.
      */
-    public FloatBuffer get(float[] dst) {
-	return get(dst, 0, dst.length);
+    public LongBuffer get(long[] dst) {
+    	return get(dst, 0, dst.length);
     }
 
     /**
      * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional
      * operation)</i>.
      *
-     * <p> This method transfers the floats remaining in the
+     * <p> This method transfers the longs remaining in the
      * given source buffer into this buffer.  If there are more
-     * floats remaining in the source buffer than in this buffer,
+     * longs remaining in the source buffer than in this buffer,
      * that is, if
      * <tt>src.remaining()</tt>&nbsp;<tt>&gt;</tt>&nbsp;<tt>remaining()</tt>,
-     * then no floats are transferred and a {@link
+     * then no longs are transferred and a {@link
      * BufferOverflowException} is thrown.
      *
      * <p> Otherwise, this method copies
-     * <i>n</i>&nbsp;=&nbsp;<tt>src.remaining()</tt> floats from
+     * <i>n</i>&nbsp;=&nbsp;<tt>src.remaining()</tt> longs from
      * the given buffer into this buffer, starting at each buffer's
      * current position.  The positions of both buffers are then
      * incremented by <i>n</i>.
@@ -390,68 +386,67 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * except that it first checks that there is sufficient space in
      * this buffer and it is potentially much more efficient. </p>
      *
-     * @param src The source buffer from which floats are to be
+     * @param src The source buffer from which longs are to be
      * read; must not be this buffer.
      *
      * @return This buffer.
      *
      * @throws BufferOverflowException If there is insufficient space
-     * in this buffer for the remaining floats in the source
+     * in this buffer for the remaining longs in the source
      * buffer.
      *
      * @throws IllegalArgumentException If the source buffer is this buffer.
      *
      * @throws ReadOnlyBufferException If this buffer is
-     * read-only. <b><i>JSR 239 does not support read-only buffer or
+     * read-only. <b><i>This implementation does not support read-only buffer or
      * the <code>ReadOnlyBufferException</code> class.</i></b>
      */
-    public FloatBuffer put(FloatBuffer src) {
+    public LongBuffer put(LongBuffer src) {
         if (src == this) {
             throw new IllegalArgumentException();
         }
 	
-	FloatBufferImpl srci = (FloatBufferImpl)src;
+	    LongBufferImpl srci = (LongBufferImpl)src;
 
-	int length = srci.limit - srci.position;
+    	int length = srci.limit - srci.position;
         if (length > this.limit - this.position) {
             throw new BufferOverflowException();
         }
-
-        if (order() != srci.order()) {
+        if ((order() != srci.order()) || 
+            ( isDirect && order() != ByteOrder.nativeOrder()) ||
+            ( srci.isDirect && srci.order() != ByteOrder.nativeOrder())) {
             //No optimization if order is not same to each other
-            for (int k = 0; k < length; k++) {
-                put(k, srci.get(k));                
+            while (srci.hasRemaining()) {
+                put(srci.get());
             }
+            return this;
         } else if (isDirect && srci.isDirect) {
-            ByteBufferImpl._copyBytes(srci.arrayOffset +
-                                      (srci.position << 2),
-                                      this.arrayOffset +
-                                      (this.position << 2),
-                                      (length << 2));
-	} else if (isDirect && !srci.isDirect) {
+	        ByteBufferImpl._copyBytes(srci.arrayOffset + (srci.position << 3),
+		       this.arrayOffset + (this.position << 3),
+		       (length << 3));
+	    } else if (isDirect && !srci.isDirect) {
             if (srci.array != null) {
-                ByteBufferImpl._putFloats(this.arrayOffset +
-                                          (this.position << 2),
+                ByteBufferImpl._putLongs(this.arrayOffset +
+                                          (this.position << 3),
                                           srci.array,
-                                          srci.arrayOffset +
-                                          srci.position,
+                                          srci.arrayOffset + srci.position,
                                           length);
             } else {
                 byte[] srcArray = srci.parent.array;
                 int srciArrayOffset = srci.parent.arrayOffset +
                     srci.arrayOffset +
-                    (srci.position << 2);
+                    (srci.position << 3);
                 
                 ByteBufferImpl._putBytes(this.arrayOffset +
-                                         (this.position << 2),
+                                         (this.position << 3),
                                          srcArray,
                                          srciArrayOffset,
-                                         4*length);
+                                         8*length);
             }
-	} else if (!isDirect && srci.isDirect) {
+    	} else if (!isDirect && srci.isDirect) {
             if (array != null) {
-                ByteBufferImpl._getFloats(srci.arrayOffset +
-                                          (srci.position << 2),
+                ByteBufferImpl._getLongs(srci.arrayOffset +
+                                          (srci.position << 3),
                                           this.array,
                                           this.arrayOffset + this.position,
                                           length);
@@ -459,43 +454,44 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
                 byte[] dstArray = parent.array;
                 int dstArrayOffset = parent.arrayOffset +
                     arrayOffset +
-                    (position << 2);
+                    (position << 3);
                 
                 ByteBufferImpl._getBytes(srci.arrayOffset +
-                                         (srci.position << 2),
+                                         (srci.position << 3),
                                          dstArray,
                                          dstArrayOffset,
-                                         4*length);
+                                         8*length);
             }
-	} else if (!isDirect && !srci.isDirect) {
+	    } else if (!isDirect && !srci.isDirect) {
             if (array != null && srci.array != null) {
                 System.arraycopy(srci.array, srci.arrayOffset + srci.position,
                                  this.array, this.arrayOffset + this.position,
                                  length);
             } else {
-                for (int i = 0; i < length; i++) {
-                    put(i, srci.get(i));
+                while (srci.hasRemaining()) {
+                    put(srci.get());
                 }
+                return this;
             }
-	}
+	    }
 	
-	srci.position += length;
-	this.position += length;
-	return this;
+	    srci.position += length;
+	    this.position += length;
+	    return this;
     }
-
+    
     /**
      * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional
      * operation)</i>.
      *
-     * <p> This method transfers floats into this buffer from the
-     * given source array.  If there are more floats to be copied
+     * <p> This method transfers longs into this buffer from the
+     * given source array.  If there are more longs to be copied
      * from the array than remain in this buffer, that is, if
      * <tt>length</tt>&nbsp;<tt>&gt;</tt>&nbsp;<tt>remaining()</tt>,
-     * then no floats are transferred and a {@link
+     * then no longs are transferred and a {@link
      * BufferOverflowException} is thrown.
      *
-     * <p> Otherwise, this method copies <tt>length</tt> floats
+     * <p> Otherwise, this method copies <tt>length</tt> longs
      * from the given array into this buffer, starting at the given
      * offset in the array and at the current position of this buffer.
      * The position of this buffer is then incremented by
@@ -512,13 +508,13 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * except that it first checks that there is sufficient space in
      * this buffer and it is potentially much more efficient. </p>
      *
-     * @param src The array from which floats are to be read.
+     * @param src The array from which longs are to be read.
      *
      * @param offset The offset within the array of the first
-     * float to be read; must be non-negative and no larger than
+     * long to be read; must be non-negative and no larger than
      * <tt>array.length</tt>.
      *
-     * @param length The number of floats to be read from the
+     * @param length The number of longs to be read from the
      * given array; must be non-negative and no larger than
      * <tt>array.length - offset</tt>.
      *
@@ -531,10 +527,10 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * <tt>offset</tt> and <tt>length</tt> parameters do not hold.
      *
      * @throws ReadOnlyBufferException If this buffer is
-     * read-only. <b><i>JSR 239 does not support read-only buffer or
+     * read-only. <b><i>This implementation does not support read-only buffer or
      * the <code>ReadOnlyBufferException</code> class.</i></b>
      */
-    public FloatBuffer put(float[] src, int offset, int length) {
+    public LongBuffer put(long[] src, int offset, int length) {
         if (offset < 0 || offset > src.length ||
             length < 0 || length > src.length - offset) {
             throw new IndexOutOfBoundsException();
@@ -543,15 +539,15 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
             throw new BufferOverflowException();
         }
 
-        int bytePtr = arrayOffset + (position << 2);
-    	if (isDirect) {
-	        if (order() == ByteOrder.nativeOrder()) {
-	            ByteBufferImpl._putFloats(bytePtr, src, offset, length);
+        int bytePtr = arrayOffset + (position << 3);
+	    if (isDirect) {
+            if (order() == ByteOrder.nativeOrder()) {
+	            ByteBufferImpl._putLongs(bytePtr, src, offset, length);
             } else {
                 bytePtr -= arrayOffset;
                 for (int i = 0; i < length; i++) {
-                    parent.putFloat(bytePtr, src[offset++]);
-                    bytePtr += 4;
+                    parent.putLong(bytePtr, src[offset++]);
+                    bytePtr += 8;
                 }
             }
     	} else if (array != null) {
@@ -559,19 +555,19 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
     			     array, arrayOffset + position, length);
     	} else {
                 for (int i = 0; i < length; i++) {
-                parent.putFloat(bytePtr, src[offset++]);
-                bytePtr += 4;
-            }
-        }
-	position += length;
-	return this;
+                    parent.putLong(bytePtr, src[offset++]);
+                    bytePtr += 8;
+                }
+    	}
+    	position += length;
+    	return this;
     }
 
     /**
      * Relative bulk <i>put</i> method&nbsp;&nbsp;<i>(optional operation)</i>.
      *
      * <p> This method transfers the entire content of the given
-     * source float array into this buffer.  An invocation of
+     * source long array into this buffer.  An invocation of
      * this method of the form <tt>dst.put(a)</tt> behaves in exactly
      * the same way as the invocation
      *
@@ -584,31 +580,31 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * in this buffer.
      *
      * @throws ReadOnlyBufferException If this buffer is
-     * read-only. <b><i>JSR 239 does not support read-only buffer or
+     * read-only. <b><i>This implementation does not support read-only buffer or
      * the <code>ReadOnlyBufferException</code> class.</i></b>
      */
-    public final FloatBuffer put(float[] src) {
-	return put(src, 0, src.length);
+    public final LongBuffer put(long[] src) {
+	    return put(src, 0, src.length);
     }
 
     /**
      * Tells whether or not this buffer is backed by an accessible
-     * float array.
+     * long array.
      *
      * <p> If this method returns <tt>true</tt> then the {@link
      * #array() array} and {@link #arrayOffset() arrayOffset} methods
      * may safely be invoked.  </p>
      *
      * @return <tt>true</tt> if, and only if, this buffer is backed by
-     * an array and is not read-only. <b><i>JSR 239 does not support
+     * an array and is not read-only. <b><i>This implementation does not support
      * read-only buffers.</i></b>
      */
     public final boolean hasArray() {
-	return array != null;
+    	return array != null;
     }
 
     /**
-     * Returns the float array that backs this
+     * Returns the long array that backs this
      * buffer&nbsp;&nbsp;<i>(optional operation)</i>.
      *
      * <p> Modifications to this buffer's content will cause the returned
@@ -621,17 +617,17 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * @return The array that backs this buffer.
      *
      * @throws ReadOnlyBufferException If this buffer is
-     * read-only. <b><i>JSR 239 does not support read-only buffer or
+     * read-only. <b><i>This implementation does not support read-only buffer or
      * the <code>ReadOnlyBufferException</code> class.</i></b>
      *
      * @throws UnsupportedOperationException If this buffer is not
      * backed by an accessible array.
      */
-    public final float[] array() {
-	if (array == null) {
-	    throw new UnsupportedOperationException();
-	}
-	return array;
+    public final long[] array() {
+    	if (array == null) {
+    	    throw new UnsupportedOperationException();
+    	}
+    	return array;
     }
 
     /**
@@ -651,22 +647,21 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * element of the buffer.
      *
      * @throws ReadOnlyBufferException If this buffer is
-     * read-only. <b><i>JSR 239 does not support read-only buffer or
+     * read-only. <b><i>This implementation does not support read-only buffer or
      * the <code>ReadOnlyBufferException</code> class.</i></b>
      *
      * @throws UnsupportedOperationException If this buffer is not
      * backed by an accessible array.
      */
     public final int arrayOffset() {
-	if (array == null) {
-	    throw new UnsupportedOperationException();
-	}
-	return arrayOffset;
-
+    	if (array == null) {
+    	    throw new UnsupportedOperationException();
+    	}
+    	return arrayOffset;
     }
 
     /**
-     * Tells whether or not this float buffer is direct. </p>
+     * Tells whether or not this long buffer is direct. </p>
      *
      * @return  <tt>true</tt> if, and only if, this buffer is direct.
      */
@@ -678,7 +673,7 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * @return A summary string
      */
     public String toString() {
-        return "java.nio.ShortBuffer[" +
+        return "java.nio.LongBuffer[" +
             "pos=" + position() +
             "lim=" + limit() +
             "cap=" + capacity() +
@@ -688,7 +683,7 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
     /**
      * Returns the current hash code of this buffer.
      *
-     * <p> The hash code of a float buffer depends only upon its remaining
+     * <p> The hash code of a long buffer depends only upon its remaining
      * elements; that is, upon the elements from <tt>position()</tt> up to, and
      * including, the element at <tt>limit()</tt>&nbsp;-&nbsp;<tt>1</tt>.
      *
@@ -699,17 +694,17 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      * @return  The current hash code of this buffer
      */
     public int hashCode() {
-	int h = 1;
-	int p = position();
-	for (int i = limit() - 1; i >= p; i--)
-	    h = 31 * h + (int)get(i);
-	return h;
+    	int h = 1;
+    	int p = position();
+    	for (int i = limit() - 1; i >= p; i--)
+    	    h = 31 * h + (int)get(i);
+    	return h;
     }
 
     /**
      * Tells whether or not this buffer is equal to another object.
      *
-     * <p> Two float buffers are equal if, and only if,
+     * <p> Two long buffers are equal if, and only if,
      *
      * <p><ol>
      *
@@ -724,7 +719,7 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      *
      * </ol>
      *
-     * <p> A float buffer is not equal to any other type of object.  </p>
+     * <p> A long buffer is not equal to any other type of object.  </p>
      *
      * @param  ob  The object to which this buffer is to be compared.
      *
@@ -732,61 +727,61 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      *           given object.
      */
     public boolean equals(Object ob) {
-	if (!(ob instanceof FloatBuffer))
-	    return false;
-	FloatBuffer that = (FloatBuffer)ob;
-	if (this.remaining() != that.remaining())
-	    return false;
-	int p = this.position();
-	for (int i = this.limit() - 1, j = that.limit() - 1; i >= p; i--, j--) {
-	    float v1 = this.get(i);
-	    float v2 = that.get(j);
-	    if (v1 != v2) {
-		if ((v1 != v1) && (v2 != v2))	// For float and double
-		    continue;
-		return false;
-	    }
-	}
-	return true;
+    	if (!(ob instanceof LongBuffer))
+    	    return false;
+    	LongBuffer that = (LongBuffer)ob;
+    	if (this.remaining() != that.remaining())
+    	    return false;
+    	int p = this.position();
+    	for (int i = this.limit() - 1, j = that.limit() - 1; i >= p; i--, j--) {
+    	    long v1 = this.get(i);
+    	    long v2 = that.get(j);
+    	    if (v1 != v2) {
+    		if ((v1 != v1) && (v2 != v2))	// For float and double
+    		    continue;
+    		return false;
+    	    }
+    	}
+    	return true;
     }
 
     /**
      * Compares this buffer to another.
      *
-     * <p> Two float buffers are compared by comparing their sequences of
+     * <p> Two long buffers are compared by comparing their sequences of
      * remaining elements lexicographically, without regard to the starting
      * position of each sequence within its corresponding buffer.
      *
-     * <p> A float buffer is not comparable to any other type of object.
+     * <p> A long buffer is not comparable to any other type of object.
      *
      * @return  A negative integer, zero, or a positive integer as this buffer
      *		is less than, equal to, or greater than the given buffer.
-     * @throws  ClassCastException If the argument is not a float buffer.
+     * @throws  ClassCastException If the argument is not a long buffer.
      */
     public int compareTo(Object ob) {
-        FloatBuffer that = (FloatBuffer)ob;
-	int n = this.position() + Math.min(this.remaining(), that.remaining());
-	for (int i = this.position(), j = that.position(); i < n; i++, j++) {
-	    float v1 = this.get(i);
-	    float v2 = that.get(j);
-	    if (v1 == v2)
-		continue;
-	    if ((v1 != v1) && (v2 != v2)) 	// For float and double
-		continue;
-	    if (v1 < v2)
-		return -1;
-	    return +1;
-	}
-	return this.remaining() - that.remaining();
+    	LongBuffer that = (LongBuffer)ob;
+    	int n = this.position() + Math.min(this.remaining(), that.remaining());
+    	for (int i = this.position(), j = that.position(); i < n; i++, j++) {
+    	    long v1 = this.get(i);
+    	    long v2 = that.get(j);
+    	    if (v1 == v2)
+    		continue;
+    	    if ((v1 != v1) && (v2 != v2)) 	// For float and double
+    		continue;
+    	    if (v1 < v2)
+    		return -1;
+    	    return +1;
+    	}
+    	return this.remaining() - that.remaining();
     }
 
     /**
      * Retrieves this buffer's byte order.
      *
-     * <p> The byte order of a float buffer created by allocation or by
-     * wrapping an existing <tt>float</tt> array is the {@link
+     * <p> The byte order of a long buffer created by allocation or by
+     * wrapping an existing <tt>long</tt> array is the {@link
      * ByteOrder#nativeOrder </code>native order<code>} of the underlying
-     * hardware.  The byte order of a float buffer created as a <a
+     * hardware.  The byte order of a long buffer created as a <a
      * href="ByteBuffer.html#views">view</a> of a byte buffer is that of the
      * byte buffer at the moment that the view is created.  </p>
      *
@@ -794,3 +789,4 @@ public abstract class FloatBuffer extends Buffer implements Comparable {
      */
     public abstract ByteOrder order();
 }
+

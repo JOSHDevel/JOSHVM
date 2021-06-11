@@ -319,7 +319,15 @@ public abstract class IntBuffer extends Buffer implements Comparable {
 
         int bytePtr = arrayOffset + (position << 2);
 	if (isDirect) {
-	    ByteBufferImpl._getInts(bytePtr, dst, offset, length);
+	    if (order() == ByteOrder.nativeOrder()) {
+    	    ByteBufferImpl._getInts(bytePtr, dst, offset, length);
+        } else {
+            bytePtr -= arrayOffset;
+            for (int i = 0; i < length; i++) {
+                 dst[offset++] = parent.getInt(bytePtr);
+                 bytePtr += 4;
+            }
+        }
 	} else if (array != null) {
 	    System.arraycopy(array, arrayOffset + position,
                              dst, offset, length);
@@ -535,12 +543,20 @@ public abstract class IntBuffer extends Buffer implements Comparable {
         }
 
         int bytePtr = arrayOffset + (position << 2);
-	if (isDirect) {
-	    ByteBufferImpl._putInts(bytePtr, src, offset, length);
-	} else if (array != null) {
-	    System.arraycopy(src, offset,
+	    if (isDirect) {
+	        if (order() == ByteOrder.nativeOrder()) {
+	            ByteBufferImpl._putInts(bytePtr, src, offset, length);
+            } else {
+                bytePtr -= arrayOffset;
+                for (int i = 0; i < length; i++) {
+                    parent.putInt(bytePtr, src[offset++]);
+                    bytePtr += 4;
+                }
+            }
+	    } else if (array != null) {
+	        System.arraycopy(src, offset,
 			     array, arrayOffset + position, length);
-	} else {
+	    } else {
             for (int i = 0; i < length; i++) {
                 parent.putInt(bytePtr, src[offset++]);
                 bytePtr += 4;
