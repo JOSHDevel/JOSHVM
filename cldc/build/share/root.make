@@ -224,6 +224,12 @@ include $(JSR280_DIR)/makefiles/classpath.make
 JOSH_BUILD_MODULES += jsr280
 endif
 
+ifeq ($(ENABLE_NIO), true)
+include $(NIO_DIR)/makefiles/classpath.make
+JOSH_BUILD_MODULES += nio
+endif
+
+
 JAVA_FILES=$(shell echo >&2 Finding .java files ...; \
   find \
   $(JSR_JAVA_FILES_DIR)                   \
