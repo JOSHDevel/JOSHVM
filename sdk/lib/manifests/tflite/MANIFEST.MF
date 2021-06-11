@@ -1,0 +1,5 @@
+API: TFLITE
+API-Name: Tensorflow Lite Java API for JOSH
+API-Type: Optional
+API-Specification-Version: 2.5.0
+
