@@ -1583,6 +1583,314 @@ jint Java_org_joshvm_system_PlatformControl_setSystemTime() {
   return 0;
 }
 
+// public static native int getLength(Object src);
+KNI_RETURNTYPE_INT Java_org_joshvm_util_Array_getLength(JVM_SINGLE_ARG_TRAPS) {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  
+  // Check for null pointers
+  if (src.is_null()) {
+    Throw::null_pointer_exception(arraycopy_null_pointer JVM_THROW_0);
+  }
+
+  if (src.is_array()) {
+  	KNI_ReturnInt(src().length());
+  }
+  Throw::throw_exception(Symbols::java_lang_IllegalArgumentException(),
+                             parameter_types_mismatch JVM_THROW_0);
+}
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_isObjArray() {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  if (src.is_null() || !src.is_obj_array()) {
+    KNI_ReturnBoolean(KNI_FALSE);
+  } else {
+    KNI_ReturnBoolean(KNI_TRUE);
+  }
+}
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_isByteArray() {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  
+  if (src.is_null() || !src.is_type_array() || !src.obj()->is_byte_array()) {
+    KNI_ReturnBoolean(KNI_FALSE);
+  } else {
+    KNI_ReturnBoolean(KNI_TRUE);
+  }
+}
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_isIntArray() {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  if (src.is_null() || !src.is_type_array() || !src.obj()->is_int_array()) {
+    KNI_ReturnBoolean(KNI_FALSE);
+  } else {
+    KNI_ReturnBoolean(KNI_TRUE);
+  }
+}
+
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_isBoolArray() {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  if (src.is_null() || !src.is_type_array() || !src.obj()->is_bool_array()) {
+    KNI_ReturnBoolean(KNI_FALSE);
+  } else {
+    KNI_ReturnBoolean(KNI_TRUE);
+  }
+}
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_isCharArray() {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  if (src.is_null() || !src.is_type_array() || !src.obj()->is_char_array()) {
+    KNI_ReturnBoolean(KNI_FALSE);
+  } else {
+    KNI_ReturnBoolean(KNI_TRUE);
+  }
+}
+
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_isShortArray() {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  if (src.is_null() || !src.is_type_array() || !src.obj()->is_short_array()) {
+    KNI_ReturnBoolean(KNI_FALSE);
+  } else {
+    KNI_ReturnBoolean(KNI_TRUE);
+  }
+}
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_isLongArray() {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  
+  if (src.is_null() || !src.is_type_array() || !src.obj()->is_long_array()) {
+    KNI_ReturnBoolean(KNI_FALSE);
+  } else {
+    KNI_ReturnBoolean(KNI_TRUE);
+  }
+}
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_isFloatArray() {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  if (src.is_null() || !src.is_type_array() || !src.obj()->is_float_array()) {
+    KNI_ReturnBoolean(KNI_FALSE);
+  } else {
+    KNI_ReturnBoolean(KNI_TRUE);
+  }
+}
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_isDoubleArray() {
+  Array::Raw src = GET_PARAMETER_AS_OOP(1);
+  if (src.is_null() || !src.is_type_array() || !src.obj()->is_double_array()) {
+    KNI_ReturnBoolean(KNI_FALSE);
+  } else {
+    KNI_ReturnBoolean(KNI_TRUE);
+  }
+}
+
+KNI_RETURNTYPE_OBJECT Java_org_joshvm_util_Array_getObjectArray(JVM_SINGLE_ARG_TRAPS) {
+  int index;
+  jsize size;
+
+  KNI_StartHandles(2);
+  KNI_DeclareHandle(array);
+  KNI_DeclareHandle(object);
+    
+
+  KNI_GetParameterAsObject(1, array);
+  index = KNI_GetParameterAsInt(2);
+
+  size = KNI_GetArrayLength(array);
+  if (size <= index || index < 0) {
+	Throw::array_index_out_of_bounds_exception(empty_message JVM_THROW_0);
+  }
+
+  KNI_GetObjectArrayElement(array, index, object);
+
+  KNI_EndHandlesAndReturnObject(object);
+}
+
+
+KNI_RETURNTYPE_INT Java_org_joshvm_util_Array_getIntArray(JVM_SINGLE_ARG_TRAPS) {
+  int index;
+  jsize size;
+  jint value;
+
+  KNI_StartHandles(1);
+  KNI_DeclareHandle(array);
+    
+
+  KNI_GetParameterAsObject(1, array);
+  index = KNI_GetParameterAsInt(2);
+
+  size = KNI_GetArrayLength(array);
+  if (size <= index || index < 0) {
+	Throw::array_index_out_of_bounds_exception(empty_message JVM_THROW_0);
+  }
+  
+  value = KNI_GetIntArrayElement(array, index);
+
+  KNI_EndHandles();
+  KNI_ReturnInt(value);
+}
+
+KNI_RETURNTYPE_BYTE Java_org_joshvm_util_Array_getByteArray(JVM_SINGLE_ARG_TRAPS) {
+  int index;
+  jsize size;
+  jbyte value;
+
+  KNI_StartHandles(1);
+  KNI_DeclareHandle(array);
+    
+
+  KNI_GetParameterAsObject(1, array);
+  index = KNI_GetParameterAsInt(2);
+
+  size = KNI_GetArrayLength(array);
+  if (size <= index || index < 0) {
+	Throw::array_index_out_of_bounds_exception(empty_message JVM_THROW_0);
+  }
+  
+  value = KNI_GetByteArrayElement(array, index);
+
+  KNI_EndHandles();
+  KNI_ReturnByte(value);
+}
+
+KNI_RETURNTYPE_CHAR Java_org_joshvm_util_Array_getCharArray(JVM_SINGLE_ARG_TRAPS) {
+  int index;
+  jsize size;
+  jchar value;
+
+  KNI_StartHandles(1);
+  KNI_DeclareHandle(array);
+    
+
+  KNI_GetParameterAsObject(1, array);
+  index = KNI_GetParameterAsInt(2);
+
+  size = KNI_GetArrayLength(array);
+  if (size <= index || index < 0) {
+	Throw::array_index_out_of_bounds_exception(empty_message JVM_THROW_0);
+  }
+  
+  value = KNI_GetCharArrayElement(array, index);
+
+  KNI_EndHandles();
+  KNI_ReturnChar(value);
+}
+
+KNI_RETURNTYPE_BOOLEAN Java_org_joshvm_util_Array_getBoolArray(JVM_SINGLE_ARG_TRAPS) {
+  int index;
+  jsize size;
+  jboolean value;
+
+  KNI_StartHandles(1);
+  KNI_DeclareHandle(array);
+    
+
+  KNI_GetParameterAsObject(1, array);
+  index = KNI_GetParameterAsInt(2);
+
+  size = KNI_GetArrayLength(array);
+  if (size <= index || index < 0) {
+	Throw::array_index_out_of_bounds_exception(empty_message JVM_THROW_0);
+  }
+  
+  value = KNI_GetBooleanArrayElement(array, index);
+
+  KNI_EndHandles();
+  KNI_ReturnBoolean(value);
+}
+
+KNI_RETURNTYPE_SHORT Java_org_joshvm_util_Array_getShortArray(JVM_SINGLE_ARG_TRAPS) {
+  int index;
+  jsize size;
+  jshort value;
+
+  KNI_StartHandles(1);
+  KNI_DeclareHandle(array);
+    
+
+  KNI_GetParameterAsObject(1, array);
+  index = KNI_GetParameterAsInt(2);
+
+  size = KNI_GetArrayLength(array);
+  if (size <= index || index < 0) {
+	Throw::array_index_out_of_bounds_exception(empty_message JVM_THROW_0);
+  }
+  
+  value = KNI_GetShortArrayElement(array, index);
+
+  KNI_EndHandles();
+  KNI_ReturnShort(value);
+}
+
+KNI_RETURNTYPE_LONG Java_org_joshvm_util_Array_getLongArray(JVM_SINGLE_ARG_TRAPS) {
+  int index;
+  jsize size;
+  jlong value;
+
+  KNI_StartHandles(1);
+  KNI_DeclareHandle(array);
+    
+
+  KNI_GetParameterAsObject(1, array);
+  index = KNI_GetParameterAsInt(2);
+
+  size = KNI_GetArrayLength(array);
+  if (size <= index || index < 0) {
+	Throw::array_index_out_of_bounds_exception(empty_message JVM_THROW_0);
+  }
+  
+  value = KNI_GetLongArrayElement(array, index);
+
+  KNI_EndHandles();
+  KNI_ReturnLong(value);
+}
+
+KNI_RETURNTYPE_FLOAT Java_org_joshvm_util_Array_getFloatArray(JVM_SINGLE_ARG_TRAPS) {
+  int index;
+  jsize size;
+  jfloat value;
+
+  KNI_StartHandles(1);
+  KNI_DeclareHandle(array);
+    
+
+  KNI_GetParameterAsObject(1, array);
+  index = KNI_GetParameterAsInt(2);
+
+  size = KNI_GetArrayLength(array);
+  if (size <= index || index < 0) {
+	Throw::array_index_out_of_bounds_exception(empty_message JVM_THROW_0);
+  }
+  
+  value = KNI_GetFloatArrayElement(array, index);
+
+  KNI_EndHandles();
+  KNI_ReturnFloat(value);
+}
+
+KNI_RETURNTYPE_DOUBLE Java_org_joshvm_util_Array_getDoubleArray(JVM_SINGLE_ARG_TRAPS) {
+  int index;
+  jsize size;
+  jdouble value;
+
+  KNI_StartHandles(1);
+  KNI_DeclareHandle(array);
+    
+
+  KNI_GetParameterAsObject(1, array);
+  index = KNI_GetParameterAsInt(2);
+
+  size = KNI_GetArrayLength(array);
+  if (size <= index || index < 0) {
+	Throw::array_index_out_of_bounds_exception(empty_message JVM_THROW_0);
+  }
+  
+  value = KNI_GetDoubleArrayElement(array, index);
+
+  KNI_EndHandles();
+  KNI_ReturnDouble(value);
+}
+
 } // extern "C"
 
 #if (!ROMIZING) || (!defined(PRODUCT))
