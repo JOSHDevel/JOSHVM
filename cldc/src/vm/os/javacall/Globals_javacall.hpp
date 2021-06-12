@@ -47,7 +47,6 @@
 
 #define MAX_METHOD_TO_COMPILE 6000
 
-#define USE_SET_HEAP_LIMIT 0
 
 
 #define PLATFORM_RUNTIME_FLAGS(develop, product)                            \

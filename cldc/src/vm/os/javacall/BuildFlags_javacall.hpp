@@ -40,6 +40,9 @@
 #define SUPPORTS_TIMER_THREAD        1
 #define SUPPORTS_TIMER_INTERRUPT     1
 
+
+#define USE_SET_HEAP_LIMIT 0
+
 // The Generic port does not support adjustable memory chunks for
 // implementing the Java heap.
 #define SUPPORTS_ADJUSTABLE_MEMORY_CHUNK 0
