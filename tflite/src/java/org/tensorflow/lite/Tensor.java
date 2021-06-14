@@ -197,11 +197,11 @@ public final class Tensor {
    *
    * @throws IllegalArgumentException if the tensor data has not been allocated.
    */
-  public ByteBuffer asReadOnlyBuffer() {
-    // Note that the ByteBuffer order is not preserved when duplicated or marked read only, so
-    // we have to repeat the call.
-    return buffer().asReadOnlyBuffer().order(ByteOrder.nativeOrder());
-  }
+  // public ByteBuffer asReadOnlyBuffer() {
+  //   // Note that the ByteBuffer order is not preserved when duplicated or marked read only, so
+  //   // we have to repeat the call.
+  //   return buffer().asReadOnlyBuffer().order(ByteOrder.nativeOrder());
+  // }
 
   /**
    * Copies the contents of the provided {@code src} object to the Tensor.
@@ -352,6 +352,35 @@ public final class Tensor {
     this.shapeCopy = shape(nativeHandle);
   }
 
+  private static Class getComponentTypeByName(String className) {
+    char[] name = className.toCharArray();
+    for (int i = 0; i < name.length; i++) {
+        if (name[i] != '[') {
+            switch (name[i]) {
+                case 'Z': return Boolean.class;
+                case 'C': return Character.class;
+                case 'F': return Float.class;
+                case 'D': return Double.class;
+                case 'B': return Byte.class;
+                case 'S': return Short.class;
+                case 'I': return Integer.class;
+                case 'J': return Long.class;
+                case 'L': 
+                    int begin = i + 1;
+                try {
+                    for (int end = begin; end < name.length; end++) {
+                        if (name[end] == ';') {
+                            className = className.substring(begin, end);
+                            return Class.forName(className);                                
+                        }
+                    }
+                } catch (ClassNotFoundException e) {}
+            }
+        }
+    }
+    return null;
+}
+
   /** Returns the type of the data. */
   DataType dataTypeOf(Object o) {
     if (o != null) {
@@ -360,25 +389,24 @@ public final class Tensor {
       // array of floats is fine, but not an array of Floats.
       if (c.isArray()) {
     	Object arrObj = o;
-        while (c.isArray()) {
-          arrObj = Array.get(arrObj, 0);
-          c = arrObj.getClass();
-        }
-        if (float.class.equals(c)) {
+        //getComponentTypeByName() always get Wrapped value instead of the primitive type value
+        c = getComponentTypeByName(c.getName());
+
+        if (Float.class.equals(c)) {
           return DataType.FLOAT32;
-        } else if (int.class.equals(c)) {
+        } else if (Integer.class.equals(c)) {
           return DataType.INT32;
-        } else if (short.class.equals(c)) {
+        } else if (Short.class.equals(c)) {
           return DataType.INT16;
-        } else if (byte.class.equals(c)) {
+        } else if (Byte.class.equals(c)) {
           // Byte array can be used for storing string tensors, especially for ParseExample op.
           if (dtype == DataType.STRING) {
             return DataType.STRING;
           }
           return DataType.UINT8;
-        } else if (long.class.equals(c)) {
+        } else if (Long.class.equals(c)) {
           return DataType.INT64;
-        } else if (boolean.class.equals(c)) {
+        } else if (Boolean.class.equals(c)) {
           return DataType.BOOL;
         } else if (String.class.equals(c)) {
           return DataType.STRING;
@@ -422,7 +450,7 @@ public final class Tensor {
         }
         // If the given string data is stored in byte streams, the last array dimension should be
         // treated as a value.
-        if (byte.class.equals(c)) {
+        if (Byte.class.equals(c)) {
           --size;
         }
       }

@@ -229,6 +229,10 @@ include $(NIO_DIR)/makefiles/classpath.make
 JOSH_BUILD_MODULES += nio
 endif
 
+ifeq ($(ENABLE_TFLITE), true)
+include $(TFLITE_DIR)/makefiles/classpath.make
+endif
+
 
 JAVA_FILES=$(shell echo >&2 Finding .java files ...; \
   find \
