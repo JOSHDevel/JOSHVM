@@ -30,7 +30,6 @@ import java.io.*;
 
 import javax.microedition.io.*;
 
-import javax.microedition.pki.*;
 
 import com.sun.cldc.io.*;
 
@@ -40,7 +39,6 @@ import com.sun.midp.ssl.*;
 
 import com.sun.midp.io.*;
 
-import com.sun.midp.publickeystore.*;
 
 //import com.sun.midp.security.*;
 
@@ -69,7 +67,7 @@ public class Protocol implements SecureConnection, ConnectionBaseInterface {
     private com.sun.cldc.io.j2me.socket.Protocol tcpConnection;
 
     /** Underlying SSL connection. */
-    private SSLBouncyCastleStreamConnection sslConnection;
+    private SSLStreamConnection sslConnection;
 
     /**
      * Connect to the underlying secure socket transport.
@@ -138,10 +136,7 @@ public class Protocol implements SecureConnection, ConnectionBaseInterface {
             
         tcpConnection = new com.sun.cldc.io.j2me.socket.Protocol();
         tcpConnection.openPrim("//" + url.authority);
-        try {
-            tcpOutputStream = tcpConnection.openOutputStream();
-            try {
-                tcpInputStream = tcpConnection.openInputStream();
+        
 
                 /*
                  * Porting note: This would be the place to connect to a 
@@ -155,20 +150,13 @@ public class Protocol implements SecureConnection, ConnectionBaseInterface {
                                     tcpInputStream, tcpOutputStream,
                                     WebPublicKeyStore.getTrustedKeyStore());
                     */
-                    sslConnection = new SSLBouncyCastleStreamConnection(url.host, url.port,
-                                    tcpInputStream, tcpOutputStream, WebPublicKeyStore.getTrustedKeyStore());
+                    sslConnection = new SSLStreamConnection(tcpConnection);
                 } catch (IOException e) {
-                    tcpInputStream.close();
+                    tcpConnection.close();
                     throw e;
                 }    
-            } catch (IOException e) {
-                tcpOutputStream.close();
-                throw e;
-            }    
-        } catch (IOException e) {
-            tcpConnection.close();
-            throw e;
-        }
+                
+        
 
         return this;
     }

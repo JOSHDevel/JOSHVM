@@ -17,6 +17,8 @@
 # Please visit www.joshvm.org if you need additional information or
 # have any questions.
 
+include $(SECURITY_DIR)/makefiles/module.config
+
 #######(If ENABLE_SECURITY enabled)#######
 ifeq ($(ENABLE_SECURITY), true)
 

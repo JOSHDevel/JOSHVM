@@ -382,6 +382,10 @@ public class Protocol implements ConnectionBaseInterface, SocketConnection {
 		return -1;
 	}
 
+   public int getHandle() {
+       return handle;
+   }
+
    /*
     * A note about readByte()
     *

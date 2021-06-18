@@ -418,7 +418,16 @@ public class Protocol extends com.sun.midp.io.j2me.http.Protocol
         }
 
         try {
-            serverCert = sslConnection.getServerCertificate();
+             Certificate cert = sslConnection.getServerCertificate();
+
+            //If underlayer SSLStreamConnection has done the verification work,
+            //it could simply return null and tell upperlayer not to bother to verify again.
+            //So we check here, if it's returned as null, we skip the check
+            if (cert == null || !(cert instanceof X509Certificate)) {
+                return sslConnection;
+            }
+
+            serverCert = (X509Certificate)cert;
 
             /*
              * if the subject alternate name is a DNS name or an IP address,

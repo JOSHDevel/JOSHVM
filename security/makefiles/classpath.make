@@ -18,20 +18,33 @@
 # have any questions.
 
 MODULE_NAME=josh-crypto
+
+include $(SECURITY_DIR)/makefiles/module.config
+
 ifeq ($(ENABLE_SECURITY), true)
-JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/crypto/reference/classes \
-	$(SECURITY_DIR)/pki/reference/classes \
-	$(SECURITY_DIR)/publickeystore/reference/classes
-DOC_SOURCE_SECURITY_CRYPTO_PATH := $(BUILD_ROOT_DIR)/security/crypto/reference/classes$(DOC_PATH_SEP)$(BUILD_ROOT_DIR)/security/pki/reference/classes
-DOC_$(MODULE_NAME)_PACKAGES += org.joshvm.crypto.keystore javax.microedition.pki 
+
+JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/pki/interface
+
+DOC_SOURCE_SECURITY_PATH := $(BUILD_ROOT_DIR)/security/pki/interface
+DOC_$(MODULE_NAME)_PACKAGES += javax.microedition.pki 
+
+ifeq ($(USE_BOUNCYCASTLE), true)
+JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/publickeystore/reference/classes
+JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/pki/reference/classes
+JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/keystore/classes
+JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/ssl/bcssl/classes
+JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/crypto/reference/classes
+else
+JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/ssl/nativessl/classes
+endif
 
 ifeq ($(ENABLE_SECURITY_NATIVE_RSA_SIGNATURE), true)
-JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/signatures/classes 
+JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/signatures/classes
 DOC_$(MODULE_NAME)_PACKAGES += com.sun.midp.crypto
 endif
 
-JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/bouncycastle/classes \
-	$(SECURITY_DIR)/ssl/classes
+ifeq ($(USE_BOUNCYCASTLE), true)
+JSR_JAVA_FILES_DIR += $(SECURITY_DIR)/bouncycastle/classes
 
 DOC_SOURCE_SECURITY_BOUNCYCASTLE_PATH := $(BUILD_ROOT_DIR)/security/bouncycastle/classes
 DOC_$(MODULE_NAME)_PACKAGES += org.bouncycastle.crypto org.bouncycastle.crypto.digests org.bouncycastle.crypto.encodings \
@@ -39,6 +52,14 @@ DOC_$(MODULE_NAME)_PACKAGES += org.bouncycastle.crypto org.bouncycastle.crypto.d
 							org.bouncycastle.crypto.paddings org.bouncycastle.crypto.macs org.bouncycastle.crypto.modes  \
 							org.bouncycastle.crypto.signers org.bouncycastle.crypto.util org.bouncycastle.util org.bouncycastle.util.encoders \
 							org.bouncycastle.crypto.tls org.bouncycastle.crypto.io org.bouncycastle.crypto.params 
-						
-DOC_SOURCE_PATH := $(DOC_SOURCE_PATH)$(DOC_SOURCE_SECURITY_BOUNCYCASTLE_PATH)$(DOC_PATH_SEP)$(DOC_SOURCE_SECURITY_CRYPTO_PATH)$(DOC_PATH_SEP)
+
+DOC_SOURCE_SECURITY_KEYSTORE_PATH := $(BUILD_ROOT_DIR)/security/keystore/classes
+DOC_$(MODULE_NAME)_PACKAGES += org.joshvm.crypto.keystore 
+                            
+DOC_SOURCE_PATH := $(DOC_SOURCE_PATH)$(DOC_SOURCE_SECURITY_BOUNCYCASTLE_PATH)$(DOC_PATH_SEP)$(DOC_SOURCE_SECURITY_PATH)$(DOC_PATH_SEP)
+DOC_SOURCE_PATH := $(DOC_SOURCE_PATH)$(DOC_SOURCE_SECURITY_KEYSTORE_PATH)$(DOC_PATH_SEP)
+else
+DOC_SOURCE_PATH := $(DOC_SOURCE_PATH)$(DOC_SOURCE_SECURITY_PATH)$(DOC_PATH_SEP)
+endif
+
 endif
